@@ -38,9 +38,12 @@ similarity_measures <- function(dataframe, prompt, response, measure_type="jacca
 
 # create package skeleton
 # i.e. new folder
-setwd('~/Dropbox/Emory/projects/textAttentionCheck/package')
-package.skeleton(name = "openEnded")
+setwd('~/Dropbox/Emory/projects/textAttentionCheck/')
 
+library(devtools)
+library(roxygen2)
+roxygenize("openEnded")
+build('openEnded')
 #######################
 ### execute source code
 #######################
