@@ -12,5 +12,5 @@ devtools::install_github('zieglerjef/openEnded')
 Alternatively, download the .tar.gz file from the main repository and install the package from source:
 
 ```bash
-install.packages('openEnded_1.0.tar.gz', repos = NULL, type ='source')
+install.packages('~/Downloads/openEnded_1.0.tar.gz', repos = NULL, type ='source')
 ```
