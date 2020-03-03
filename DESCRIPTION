@@ -1,11 +1,11 @@
 Package: openEnded
 Type: Package
-Title: What the package does (short line)
+Title: Perform and analyze open-ended manipulation checks
 Version: 1.0
 Date: 2020-03-03
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Author: Jeffrey Ziegler 
+Maintainer: Jeffrey Ziegler <jeffreyziegler@emory.edu>
+Description: Users can create document similarity measures between a manipulated prompt and participants' open-ended recall of the prompt. Then, users can analyze the overall results by weighting respondents their attention to the prompt. Last, given certain assumptions about the survey design, users can estimate the average treatment effect for those participants that likely received the treatment.
+License: GPL (>= 2)
 Encoding: UTF-8
 RoxygenNote: 7.0.0
