@@ -2,6 +2,6 @@
 
 export(loadDependencies)
 export(pkgTest)
-export(plot_similarity)
+export(plotSimilarity)
 export(regressionComparison)
-export(similarity_measures)
+export(similarityMeasures)
