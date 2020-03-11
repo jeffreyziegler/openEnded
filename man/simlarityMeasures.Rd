@@ -9,27 +9,33 @@ similarity_measures(
   prompt,
   response,
   measure_type = "jaccard",
-  ngrams
+  ngrams = 3
 )
 }
 \arguments{
-\item{#}{possible values for measure_type = c("osa", "lv", "dl", "hamming", "lcs",
-"qgram", "cosine", "jaccard", "jw", "soundex")}
+\item{dataframe}{Dataframe that contains the prompt and response of the open-ended manipulation check.}
+
+\item{prompt}{Vector/column within `dataframe` that contains the prompt.}
+
+\item{response}{Vector/column within `dataframe` that contains the open-ended response.}
+
+\item{measure_type}{. Possible values for measure_type = c("osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"). Default is "jaccard".}
+
+\item{ngrams}{The number of grams/segments words should be broken into. Default n=3.}
+}
+\value{
+Vector of similarity measures (same length as input dataframe)
 }
 \description{
-Clear global environment and detach all libraries
+simlarityMeasures
 }
 \details{
-This function removes any hidden libraries or content that may be loaded in your global environment
+Calculate measure of similarity between prompt and response in open-ended manipulation check.
 }
 \examples{
-
 \dontrun{
-simlarityMeasures()
+simlarityMeasures(replication_complete.cases, prompt="textViewed", response="validityCheck", ngrams=3)
 }
-}
-\seealso{
-
 }
 \author{
 Jeffrey Ziegler

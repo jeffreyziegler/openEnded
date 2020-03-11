@@ -10,7 +10,7 @@ regressionComparison(dataframe, formula, model_type)
 \item{dataframe}{Dataframe from which you will select the outcome, predictors, and weights for the regression model.}
 }
 \value{
-three regression objects
+Three regression objects, each one accessible as an element in a list
 }
 \description{
 This function generates three regressions with:

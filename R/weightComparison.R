@@ -8,7 +8,7 @@
 #'
 #' @param dataframe Dataframe from which you will select the outcome, predictors, and weights for the regression model.
 #'
-#' @return three regression objects
+#' @return Three regression objects, each one accessible as an element in a list
 
 #' @author Jeffrey Ziegler
 #' @examples
