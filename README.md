@@ -24,5 +24,5 @@ If you use this software, please cite the original paper:
   journal={Working Paper},
   year={2020},
   url = {https://github.com/jeffreyziegler/openEnded}
-    }
+}
 ```
