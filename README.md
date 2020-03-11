@@ -14,3 +14,15 @@ Alternatively, download the .tar.gz file from the main repository and install th
 ```bash
 install.packages('~/Downloads/openEnded_1.0.tar.gz', repos = NULL, type ='source')
 ```
+
+If you use this software, please cite the original paper:
+
+```bash
+@article{ziegler2020,
+  title={A Text-As-Data Approach for Using Open-Ended Responses as Manipulation Checks},
+  author={Ziegler, Jeffrey},
+  journal={Working Paper},
+  year={2020},
+  url = {https://github.com/jeffreyziegler/openEnded}
+    }
+```
