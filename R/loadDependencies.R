@@ -21,4 +21,3 @@ loadDependencies <- function() {
   # load and install all dependency libraries
   lapply(c("stringdist", "ggplot2", "tidyr", "Zelig", "ggcorrplot"), pkgTest)
 }
-
