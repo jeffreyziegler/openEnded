@@ -10,9 +10,13 @@
 #'
 #' @return Vector of similarity measures (same length as input dataframe)
 #'
-#' @author Jeffrey Ziegler
+#' @author Jeffrey Ziegler (<jeffrey.ziegler[at]emory.edu>)
+#' 
 #' @examples
 #' simlarityMeasures(replication_complete.cases, prompt="textViewed", response="validityCheck", ngrams=3)
+#' 
+#' @seealso \code{\link{plotSimilarity}} \code{\link{plotSimilarityCorr}}
+#' 
 #' @rdname simlarityMeasures
 #' @export
 

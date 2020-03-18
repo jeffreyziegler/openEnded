@@ -10,14 +10,12 @@ pkgTest(pkg)
 This function checks if a dependent library is installed, and if not installs it, and then loads it.
 }
 \examples{
+lapply(c("stringdist", "ggplot2", "tidyr"), pkgTest)
 
-\dontrun{
-pkgTest(c("stringdist", "ggplot"))
-}
 }
 \seealso{
-\code{\link{pkgTest}}
+\code{\link{loadDependencies}}
 }
 \author{
-Jeffrey Ziegler
+Jeffrey Ziegler (<jeffrey.ziegler[at]emory.edu>)
 }

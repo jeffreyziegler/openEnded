@@ -31,7 +31,11 @@ Calculate measure of similarity between prompt and response in open-ended manipu
 }
 \examples{
 simlarityMeasures(replication_complete.cases, prompt="textViewed", response="validityCheck", ngrams=3)
+
+}
+\seealso{
+\code{\link{plotSimilarity}} \code{\link{plotSimilarityCorr}}
 }
 \author{
-Jeffrey Ziegler
+Jeffrey Ziegler (<jeffrey.ziegler[at]emory.edu>)
 }

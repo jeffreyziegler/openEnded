@@ -3,19 +3,17 @@
 #' This function checks if a dependent library is installed, and if not installs it, and then loads it.
 #'
 #'
-#' @author Jeffrey Ziegler
+#' @author Jeffrey Ziegler (<jeffrey.ziegler[at]emory.edu>)
 #' @examples
+#' lapply(c("stringdist", "ggplot2", "tidyr"), pkgTest)
 #' 
-#' \dontrun{
-#' pkgTest(c("stringdist", "ggplot"))
-#' }
 #' @rdname pkgTest
-#' @seealso \code{\link{pkgTest}}
+#' @seealso \code{\link{loadDependencies}}
 #' @export
 
 pkgTest <- function(pkg){
   new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
   if (length(new.pkg)) 
-    install.packages(new.pkg, dependencies = TRUE)
-  sapply(pkg, require, character.only = TRUE)
+    install.packages(new.pkg, dependencies = T)
+  suppressMessages(sapply(pkg, require, character.only = T))
 }

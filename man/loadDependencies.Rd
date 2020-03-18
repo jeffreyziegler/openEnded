@@ -16,14 +16,12 @@ Clear global environment and detach all libraries
 This function removes any hidden libraries or content that may be loaded in your global environment
 }
 \examples{
-
-\dontrun{
 loadDependencies()
-}
+
 }
 \seealso{
 \code{\link{pkgTest}}
 }
 \author{
-Jeffrey Ziegler
+Jeffrey Ziegler (<jeffrey.ziegler[at]emory.edu>)
 }
