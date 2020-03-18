@@ -3,6 +3,7 @@
 export(executeMarginalEffect)
 export(generateMarginalEffect)
 export(pkgTest)
+export(plotMarginalEffect)
 export(plotSimilarity)
 export(plotSimilarityCorr)
 export(regressionComparison)

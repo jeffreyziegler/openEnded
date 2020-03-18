@@ -4,7 +4,7 @@
 \alias{executeMarginalEffect}
 \title{executeMarginalEffect}
 \usage{
-executeMarginalEffect(subset = NULL, regression_model)
+executeMarginalEffect(subset = NULL, regression_model = NULL)
 }
 \arguments{
 \item{dataframe}{Dataframe that contains the prompt and response of the open-ended manipulation check.}

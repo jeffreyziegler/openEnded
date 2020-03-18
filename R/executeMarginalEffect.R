@@ -16,13 +16,15 @@
 #' @rdname executeMarginalEffect
 #' @export
 
-executeMarginalEffect <- function(subset=NULL, regression_model){
-    if(!any(grepl(subset, c("weighted", "full", "listwise")))){
-      stop('Please tell me how the data is subsetted! Your options:\n"weighted", "full", or "listwise"')
-    }
-  browser()
-  marginal_data <- generateMarginalEffect(regression_model)
-  marginal_data$subset <- subset
+executeMarginalEffect <- function(subset=NULL, regression_model=NULL){
+  if(!any(grepl(subset, c("weighted", "full", "listwise")))){
+    stop('Please tell me how the data is subsetted! Your options:\n"weighted", "full", or "listwise"')
+  }
+  if(is.null(regression_model)){
+    stop('Please provide a regression model.')
+  }
+  marginal_data <- as.data.frame(generateMarginalEffect(regression_model))
+  marginal_data$subset <- as.character(subset)
   marginal_data$outcome <- sub('\\. *', '', regression_model$formula)[2]
   return(marginal_data)
 }
