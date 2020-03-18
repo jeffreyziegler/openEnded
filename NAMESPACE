@@ -2,7 +2,6 @@
 
 export(executeMarginalEffect)
 export(generateMarginalEffect)
-export(loadDependencies)
 export(pkgTest)
 export(plotSimilarity)
 export(plotSimilarityCorr)

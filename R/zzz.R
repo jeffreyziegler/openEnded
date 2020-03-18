@@ -1,8 +1,9 @@
 .onLoad <- function(libname, pkgname) {
-  print("Hello, welcome to openEnded!")
+  print("Hello, welcome to openEnded! Please be patient while I load my dependencies :)")
 }
 
 .onAttach <- function(libname, pkgname) {
-  loadDependencies()
+  # load and install all dependency libraries
+  lapply(c("stringdist", "ggplot2", "tidyr", "Zelig", "ggcorrplot"), pkgTest)
   invisible()
 }
