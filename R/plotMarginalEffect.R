@@ -1,28 +1,36 @@
-#' @title plotMarginalEffect
+#' @title Plot Marginal Effects
 #' @description 
 #' Plot the marginal effects varying which respondents are down-weighted in a regression.
 #' 
 #' @param dataframe Dataframe that contains the predictors and outcome.
-#' @param regression_models
+#' @param regression_models Vector, or list that contains vectors, of the regression models for which you wish to estimate the marginal effects. If you only want to plot one outcome at a time, you only need to include one vector (c(baseModel, listwiseModel, weightedModel)). If you wish to display more than one outcome at a time, this is possible with facets, but you need to place each outcome in a separate list in the argument (list(c(baseModel1, listwiseModel1,weightedModel1), c(baseModel2, listwiseModel2, weightedModel2))).
 #'
 #' @return Plot of the marginal effects for the full, listwise, and weighted samples given the formula the user specified.
 #'
 #' @author Jeffrey Ziegler (<jeffrey.ziegler[at]emory.edu>)
 #' @examples
 #' plotMarginalEffect(c(baseModel_trustChurch_postTreat, listwiseModel_trustChurch_postTreat, weightedModel_trustChurch_postTreat))
+#' plotMarginalEffect(regression_models=list(c(baseModel_trustChurch_postTreat, listwiseModel_trustChurch_postTreat, weightedModel_trustChurch_postTreat), 
+#'                                           c(baseModel_responsiveness_postTreat, listwiseModel_responsiveness_postTreat, weightedModel_responsiveness_postTreat)))
+#' 
+#' @seealso  \code{\link{regressionComparison}} \code{\link{executeMarginalEffect}} \code{\link{generateMarginalEffect}} \code{\link{plotComplierATE}}
+#' 
 #' @rdname plotMarginalEffect
 #' @export
 
 plotMarginalEffect <- function(regression_models){
   firstDiffPlotData <- NULL
-  firstDiffPlotData <- rbind(executeMarginalEffect(subset="full", regression_model=regression_models[[1]]),
-                             executeMarginalEffect(subset="listwise", regression_model=regression_models[[2]]),
-                             executeMarginalEffect(subset="weighted", regression_model=regression_models[[3]]))
-  
+  model_types <- c("base", "listwise", "weighted")
+  for(i in 1:length(regression_models)){
+    for(sample in 1:length(model_types)){
+      firstDiffPlotData <- rbind(firstDiffPlotData, executeMarginalEffect(subset=model_types[sample], regression_model=regression_models[[i]][[sample]]))  
+    }
+  }
+
   firstDiffMeltedData <- reshape2::melt(firstDiffPlotData, id = c("subset", "outcome"))
   
   
-  firstDiffMeltedData$subset <- revalue(firstDiffMeltedData$subset, c("full"="Full (OLS)",
+  firstDiffMeltedData$subset <- revalue(firstDiffMeltedData$subset, c("base"="Full (OLS)",
                                                                       "weighted"="Full (WLS)",
                                                                       "listwise"="Participants weight >=0.1\n(List-wise Deletion OLS)"))
   firstDiffQuartilesPlotData <- cbind(ddply(firstDiffMeltedData, .(variable, outcome, subset), summarize, FDmean = mean(value)),
@@ -40,8 +48,7 @@ plotMarginalEffect <- function(regression_models){
   
   firstDiffQuartilesPlotData$attendance <- factor(firstDiffQuartilesPlotData$attendance, 
                                                   levels = c("Never/yearly","Monthly", "Weekly"))
-  
-  firstDiffQuartilesPlotData$outcome <- str_to_title(gsub("Church_.*","", firstDiffQuartilesPlotData$outcome))
+  firstDiffQuartilesPlotData$outcome <- str_to_title(gsub("_.*","", gsub('([[:upper:]])', ' \\1', firstDiffQuartilesPlotData$outcome)))
   ggplot(firstDiffQuartilesPlotData) +
     theme_pubr() +
     geom_pointrange(aes(x=attendance, y = FDmean, ymin = FDlow95, ymax = FDhigh95, colour=subset, shape=subset),
@@ -62,3 +69,4 @@ plotMarginalEffect <- function(regression_models){
     geom_vline(xintercept = c(1.5,2.5)) +
     labs(y='\nMarginal Effect of Treatment\n', x='\nTreatment\n', colour="Sample\n(Model):", shape="Sample\n(Model):")
 }
+

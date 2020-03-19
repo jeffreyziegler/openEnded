@@ -2,7 +2,7 @@
 % Please edit documentation in R/regressionComparison.R
 \name{regressionComparison}
 \alias{regressionComparison}
-\title{Compare the overall results varying on which respondents are included in the model based on attention.}
+\title{Estimate regression models for comparison}
 \usage{
 regressionComparison(dataframe, formula, similarity_measures, k, model_type)
 }
@@ -21,6 +21,9 @@ regressionComparison(dataframe, formula, similarity_measures, k, model_type)
 Three regression objects are estimated and loaded to your global environment as separate Zelig objects. They are named baseModel, listwiseModel, and weightedModel.
 }
 \description{
+Compare the overall results varying on which respondents are included in the model based on attention.
+}
+\details{
 This function generates three regressions with:
 (1) the full sample irrespective of attention
 (2) a subsetted sample based on list-wise deletion of respondents that "failed" manipulation check

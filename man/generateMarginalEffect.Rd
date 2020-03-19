@@ -2,21 +2,21 @@
 % Please edit documentation in R/generateMarginalEffect.R
 \name{generateMarginalEffect}
 \alias{generateMarginalEffect}
-\title{generateMarginalEffect}
+\title{Generate Marginal Effects}
 \usage{
 generateMarginalEffect(temp_model)
 }
 \arguments{
-\item{dataframe}{Dataframe that contains the prompt and response of the open-ended manipulation check.}
+\item{temp_model}{Regression object indicating one model that you wish to calculate the marginal effects for.}
 }
 \value{
-Vector of similarity measures (same length as input dataframe)
+Dataframe of marginal effects.
 }
 \description{
-Calculate the overall treatment effects differing how inattentive participants are down-weighted.
+This is an internal function that helps calculate the overall treatment effects differing how inattentive participants are down-weighted.
 }
 \examples{
-generateMarginalEffect(temp_model)
+generateMarginalEffect(baseModel_trustChurch_postTreat)
 
 }
 \seealso{

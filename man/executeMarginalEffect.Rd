@@ -2,23 +2,23 @@
 % Please edit documentation in R/executeMarginalEffect.R
 \name{executeMarginalEffect}
 \alias{executeMarginalEffect}
-\title{executeMarginalEffect}
+\title{Execute Marginal Effect}
 \usage{
 executeMarginalEffect(subset = NULL, regression_model = NULL)
 }
 \arguments{
-\item{dataframe}{Dataframe that contains the prompt and response of the open-ended manipulation check.}
+\item{subset}{Which sample is used to estimate this regression model? Full ("base"), listwise deleting those that incorrectly answer manipulation check ("listwise"), or weighted using WLS based on continuous measure of attention ("weighted").}
 
-\item{regression_models}{Set of regression models that you wish to estimate the marginal effects for. In the example, there are five outcomes,  which appears in the example below.}
+\item{temp_model}{Regression object indicating one model that you wish to calculate the marginal effects for.}
 }
 \value{
-Dataframe of all estimated marginal effects that make up the sampling distribution.
+Dataframe of all estimated marginal effects that make up the sampling distribution. If used with plotMarginalEffect, you will automatically receive the sampling distributions for all three types of subsets to compare against one another.
 }
 \description{
-Calculate the overall treatment effects differing how inattentive participants are down-weighted.
+Run the essential generateMarginalEffects function to calculate the overall treatment effects differing how inattentive participants are down-weighted.
 }
 \examples{
-executeMarginalEffect(subset="full", regression_model=baseModel_trustChurch_postTreat)
+executeMarginalEffect(subset="base", regression_model=baseModel_trustChurch_postTreat)
 
 }
 \seealso{

@@ -1,6 +1,8 @@
-#' @title Compare the overall results varying on which respondents are included in the model based on attention.
+#' @title Estimate regression models for comparison
 #' 
-#' @description
+#' @description Compare the overall results varying on which respondents are included in the model based on attention.
+#' 
+#' @details 
 #' This function generates three regressions with:
 #' (1) the full sample irrespective of attention
 #' (2) a subsetted sample based on list-wise deletion of respondents that "failed" manipulation check

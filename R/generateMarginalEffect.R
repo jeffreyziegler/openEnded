@@ -1,15 +1,15 @@
-#' @title generateMarginalEffect
-#' @description 
-#' Calculate the overall treatment effects differing how inattentive participants are down-weighted.
+#' @title Generate Marginal Effects
 #' 
-#' @param dataframe Dataframe that contains the prompt and response of the open-ended manipulation check.
-#' @param 
+#' @description 
+#' This is an internal function that helps calculate the overall treatment effects differing how inattentive participants are down-weighted.
+#' 
+#' @param temp_model Regression object indicating one model that you wish to calculate the marginal effects for.
 #'
-#' @return Vector of similarity measures (same length as input dataframe)
+#' @return Dataframe of marginal effects.
 #'
 #' @author Jeffrey Ziegler (<jeffrey.ziegler[at]emory.edu>)
 #' @examples
-#' generateMarginalEffect(temp_model)
+#' generateMarginalEffect(baseModel_trustChurch_postTreat)
 #' 
 #' @seealso  \code{\link{regressionComparison}} \code{\link{executeMarginalEffect}} \code{\link{plotMarginalEffect}} \code{\link{plotComplierATE}}
 #' 

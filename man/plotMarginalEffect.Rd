@@ -2,12 +2,12 @@
 % Please edit documentation in R/plotMarginalEffect.R
 \name{plotMarginalEffect}
 \alias{plotMarginalEffect}
-\title{plotMarginalEffect}
+\title{Plot Marginal Effects}
 \usage{
 plotMarginalEffect(regression_models)
 }
 \arguments{
-\item{regression_models}{}
+\item{regression_models}{Vector, or list that contains vectors, of the regression models for which you wish to estimate the marginal effects. If you only want to plot one outcome at a time, you only need to include one vector (c(baseModel, listwiseModel, weightedModel)). If you wish to display more than one outcome at a time, this is possible with facets, but you need to place each outcome in a separate list in the argument (list(c(baseModel1, listwiseModel1,weightedModel1), c(baseModel2, listwiseModel2, weightedModel2))).}
 
 \item{dataframe}{Dataframe that contains the predictors and outcome.}
 }
@@ -19,6 +19,12 @@ Plot the marginal effects varying which respondents are down-weighted in a regre
 }
 \examples{
 plotMarginalEffect(c(baseModel_trustChurch_postTreat, listwiseModel_trustChurch_postTreat, weightedModel_trustChurch_postTreat))
+plotMarginalEffect(regression_models=list(c(baseModel_trustChurch_postTreat, listwiseModel_trustChurch_postTreat, weightedModel_trustChurch_postTreat), 
+                                          c(baseModel_responsiveness_postTreat, listwiseModel_responsiveness_postTreat, weightedModel_responsiveness_postTreat)))
+
+}
+\seealso{
+\code{\link{regressionComparison}} \code{\link{executeMarginalEffect}} \code{\link{generateMarginalEffect}} \code{\link{plotComplierATE}}
 }
 \author{
 Jeffrey Ziegler (<jeffrey.ziegler[at]emory.edu>)
