@@ -2,7 +2,7 @@
 #' @description 
 #' Run the essential generateMarginalEffects function to calculate the overall treatment effects differing how inattentive participants are down-weighted.
 #' 
-#' @param temp_model Regression object indicating one model that you wish to calculate the marginal effects for.
+#' @param regression_model Regression object indicating one model that you wish to calculate the marginal effects for.
 #' @param subset Which sample is used to estimate this regression model? Full ("base"), listwise deleting those that incorrectly answer manipulation check ("listwise"), or weighted using WLS based on continuous measure of attention ("weighted").
 #'
 #' @return Dataframe of all estimated marginal effects that make up the sampling distribution. If used with plotMarginalEffect, you will automatically receive the sampling distributions for all three types of subsets to compare against one another.
@@ -23,8 +23,9 @@ executeMarginalEffect <- function(subset=NULL, regression_model=NULL){
   if(is.null(regression_model)){
     stop('Please provide a regression model.')
   }
+  #browser()
   marginal_data <- as.data.frame(generateMarginalEffect(regression_model))
-  marginal_data$subset <- as.character(subset)
+  marginal_data$subset <- subset
   marginal_data$outcome <- sub('\\. *', '', regression_model$formula)[2]
   return(marginal_data)
 }

@@ -9,7 +9,7 @@ executeMarginalEffect(subset = NULL, regression_model = NULL)
 \arguments{
 \item{subset}{Which sample is used to estimate this regression model? Full ("base"), listwise deleting those that incorrectly answer manipulation check ("listwise"), or weighted using WLS based on continuous measure of attention ("weighted").}
 
-\item{temp_model}{Regression object indicating one model that you wish to calculate the marginal effects for.}
+\item{regression_model}{Regression object indicating one model that you wish to calculate the marginal effects for.}
 }
 \value{
 Dataframe of all estimated marginal effects that make up the sampling distribution. If used with plotMarginalEffect, you will automatically receive the sampling distributions for all three types of subsets to compare against one another.

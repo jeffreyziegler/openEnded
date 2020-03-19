@@ -44,7 +44,8 @@ regressionComparison <- function(dataframe, formula, similarity_measures, k, mod
   
   # removing inattentive participants
   assign(paste("listwiseModel", sub('\\. *', '', formula)[2], sep="_"),
-         zelig(formula, model=model_type,data=dataframe[dataframe$avgSimilarity>.1,], cite=F), envir = .GlobalEnv)
+         zelig(formula, model=model_type,data=dataframe[dataframe$avgSimilarity>.1,], cite=F), 
+         envir = .GlobalEnv)
   
   # re-weighting
   assign(paste("weightedModel", sub('\\. *', '', formula)[2], sep="_"),

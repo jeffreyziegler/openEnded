@@ -3,13 +3,13 @@
 #' Plot the marginal effects varying which respondents are down-weighted in a regression.
 #' 
 #' @param dataframe Dataframe that contains the predictors and outcome.
-#' @param regression_models Vector, or list that contains vectors, of the regression models for which you wish to estimate the marginal effects. If you only want to plot one outcome at a time, you only need to include one vector (c(baseModel, listwiseModel, weightedModel)). If you wish to display more than one outcome at a time, this is possible with facets, but you need to place each outcome in a separate list in the argument (list(c(baseModel1, listwiseModel1,weightedModel1), c(baseModel2, listwiseModel2, weightedModel2))).
+#' @param regression_models List that contains a vector or vectors of the regression models for which you wish to estimate the marginal effects. If you only want to plot one outcome at a time, you only need to include one vector (c(baseModel, listwiseModel, weightedModel)). If you wish to display more than one outcome at a time, this is possible with facets, but you need to place each outcome in a separate list in the argument (list(c(baseModel1, listwiseModel1,weightedModel1), c(baseModel2, listwiseModel2, weightedModel2))).
 #'
 #' @return Plot of the marginal effects for the full, listwise, and weighted samples given the formula the user specified.
 #'
 #' @author Jeffrey Ziegler (<jeffrey.ziegler[at]emory.edu>)
 #' @examples
-#' plotMarginalEffect(c(baseModel_trustChurch_postTreat, listwiseModel_trustChurch_postTreat, weightedModel_trustChurch_postTreat))
+#' plotMarginalEffect(list(c(baseModel_trustChurch_postTreat, listwiseModel_trustChurch_postTreat, weightedModel_trustChurch_postTreat)))
 #' plotMarginalEffect(regression_models=list(c(baseModel_trustChurch_postTreat, listwiseModel_trustChurch_postTreat, weightedModel_trustChurch_postTreat), 
 #'                                           c(baseModel_responsiveness_postTreat, listwiseModel_responsiveness_postTreat, weightedModel_responsiveness_postTreat)))
 #' 
@@ -20,12 +20,10 @@
 
 plotMarginalEffect <- function(regression_models){
   firstDiffPlotData <- NULL
-  model_types <- c("base", "listwise", "weighted")
+  sample_types <- c("base", "listwise", "weighted")
   for(i in 1:length(regression_models)){
-    for(sample in 1:length(model_types)){
-     # browser()
-      
-      firstDiffPlotData <- rbind(firstDiffPlotData, executeMarginalEffect(subset=model_types[sample], regression_model=regression_models[[i]][[sample]]))  
+    for(sample in 1:length(sample_types)){
+      firstDiffPlotData <- rbind(firstDiffPlotData, executeMarginalEffect(subset=sample_types[sample], regression_model=regression_models[[i]][[sample]]))  
     }
   }
   
