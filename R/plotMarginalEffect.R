@@ -23,10 +23,12 @@ plotMarginalEffect <- function(regression_models){
   model_types <- c("base", "listwise", "weighted")
   for(i in 1:length(regression_models)){
     for(sample in 1:length(model_types)){
+     # browser()
+      
       firstDiffPlotData <- rbind(firstDiffPlotData, executeMarginalEffect(subset=model_types[sample], regression_model=regression_models[[i]][[sample]]))  
     }
   }
-
+  
   firstDiffMeltedData <- reshape2::melt(firstDiffPlotData, id = c("subset", "outcome"))
   
   
