@@ -2,13 +2,13 @@
 % Please edit documentation in R/similarityMeasures.R
 \name{similarityMeasures}
 \alias{similarityMeasures}
-\title{simlarityMeasures}
+\title{Individual Similarity Measures}
 \usage{
 similarityMeasures(
   dataframe,
   prompt,
   response,
-  measure_type = "jaccard",
+  similarity_measures_to_calculate = NULL,
   ngrams = 3
 )
 }
@@ -19,15 +19,15 @@ similarityMeasures(
 
 \item{response}{Vector/column within `dataframe` that contains the open-ended response.}
 
-\item{measure_type}{Possible values for measure_type = c("osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"). Default is "jaccard".}
-
 \item{ngrams}{The number of grams/segments words should be broken into. Default n=3.}
+
+\item{measure_type}{Possible values for measure_type = c("osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"). Default is "jaccard".}
 }
 \value{
 Vector of similarity measures (same length as input dataframe)
 }
 \description{
-Calculate measure of similarity between prompt and response in open-ended manipulation check.
+Calculate individual measures of similarity between prompt and response in open-ended manipulation check.
 }
 \examples{
 simlarityMeasures(replication_complete.cases, prompt="textViewed", response="validityCheck", ngrams=3)

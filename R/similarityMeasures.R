@@ -1,6 +1,6 @@
-#' @title simlarityMeasures
+#' @title Individual Similarity Measures
 #' @description 
-#' Calculate measure of similarity between prompt and response in open-ended manipulation check.
+#' Calculate individual measures of similarity between prompt and response in open-ended manipulation check.
 #' 
 #' @param dataframe Dataframe that contains the prompt and response of the open-ended manipulation check.
 #' @param prompt Vector/column within `dataframe` that contains the prompt.
@@ -20,6 +20,9 @@
 #' @rdname simlarityMeasures
 #' @export
 
-similarityMeasures <- function(dataframe, prompt, response, measure_type="jaccard", ngrams=3){
-  1-stringdist(enc2utf8(dataframe[, prompt]), enc2utf8(dataframe[, response]), useBytes=TRUE,  method=measure_type, q=ngrams)
+similarityMeasures <- function(dataframe, prompt, response, similarity_measures_to_calculate=NULL, ngrams=3){
+  for(measure_to_calc in similarity_measures_to_calculate){
+    dataframe[, paste(measure_to_calc, "Dist", sep="")] <-   1-stringdist(enc2utf8(dataframe[, prompt]), enc2utf8(dataframe[, response]), useBytes=TRUE,  method=measure_to_calc, q=ngrams)
+  }
+  return(dataframe)
 }
