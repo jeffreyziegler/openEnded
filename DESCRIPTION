@@ -1,11 +1,28 @@
 Package: openEnded
-Type: Package
-Title: What the package does (short line)
+Title: Tools for Implementing and Analyzing Open-Ended Responses and Manipulation Checks
 Version: 1.0
-Date: 2020-03-19
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Authors@R: 
+    person(given = "Jeffrey",
+           family = "Ziegler",
+           role = c("aut", "cre"),
+           email = "jeffrey.ziegler@emory.edu")
+
+Description: A set of tools intended to help researchers analyze manipulation checks that employ open-ended responses. 
+
+URL: https://github.com/jeffreyziegler/openEnded/
+BugReports: https://github.com/jeffreyziegler/openEnded/issues
+Depends:
+    R (>= 3.1.0)
+Imports:
+	stringdist,
+	stringr,
+	ggplot2,
+	tidyr,
+	Zelig,
+	ggcorrplot,
+	plyr,
+	ggpubr
+LazyData: true
+License: GPL (>= 2)
 Encoding: UTF-8
 RoxygenNote: 7.0.0
