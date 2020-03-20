@@ -5,9 +5,7 @@ This is the repository for the ``R`` package ``openEnded``, intended to help res
 **Installation:**
 
 To install directly from GitHub, run the following code:
-```bash
-devtools::install_github('jeffreyziegler/openEnded')
-```
+``devtools::install_github('jeffreyziegler/openEnded')``
 
 Alternatively, download the .tar.gz file from the main repository and install the package from source:
 
