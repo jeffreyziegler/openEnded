@@ -6,9 +6,7 @@ Authors@R:
            family = "Ziegler",
            role = c("aut", "cre"),
            email = "jeffrey.ziegler@emory.edu")
-
 Description: A set of tools intended to help researchers analyze manipulation checks that employ open-ended responses. 
-
 URL: https://github.com/jeffreyziegler/openEnded/
 BugReports: https://github.com/jeffreyziegler/openEnded/issues
 Depends:
@@ -21,7 +19,10 @@ Imports:
 	Zelig,
 	ggcorrplot,
 	plyr,
-	ggpubr
+	ggpubr,
+	rmarkdown,
+	knitr
+VignetteBuilder: knitr
 LazyData: true
 License: GPL (>= 2)
 Encoding: UTF-8
