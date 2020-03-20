@@ -12,9 +12,13 @@ Alternatively, download the .tar.gz file from the main repository and install th
 
 ``install.packages('~/Downloads/openEnded_1.0.tar.gz', repos = NULL, type ='source')``
 
-If you use this software, please cite the original paper:
+**Use:**
+
+Check out the <a href="https://github.com/jeffreyziegler/openEnded/blob/master/vignettes/example_application.pdf" target="_blank"> application</a> in ``vignettes/`` for a step-by-step guide of how to reproduce the example in the original paper.
 
 **Citation:**
+
+If you use this software, please cite the original paper:
 
 ```bash
 @article{ziegler2020,
