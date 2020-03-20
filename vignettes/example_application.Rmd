@@ -2,7 +2,7 @@
 title: "Example application using openEnded to analyze open-ended manipulation checks"
 author: "Jeffrey Ziegler"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: rmarkdown::pdf_document
 vignette: >
   %\VignetteIndexEntry{Example Application}
   %\VignetteEngine{knitr::rmarkdown}
