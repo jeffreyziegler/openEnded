@@ -16,10 +16,16 @@ If you use this software, please cite the original paper:
 
 ``
 @article{ziegler2020,
+
   title={A Text-As-Data Approach for Using Open-Ended Responses as Manipulation Checks},
+  
   author={Ziegler, Jeffrey},
+  
   journal={Working Paper},
+  
   year={2020},
+  
   url = {https://github.com/jeffreyziegler/openEnded}
+  
 }
 ``
