@@ -14,6 +14,8 @@ Alternatively, download the .tar.gz file from the main repository and install th
 
 If you use this software, please cite the original paper:
 
+**Citation:**
+
 ```bash
 @article{ziegler2020,
   title={A Text-As-Data Approach For Using Open-Ended Responses As Manipulation Checks},
