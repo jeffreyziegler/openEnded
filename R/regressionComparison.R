@@ -27,17 +27,8 @@
 #' @export
 
 regressionComparison <- function(dataframe, formula, similarity_measures, k, model_type){
-  # create empty vector to fill with each component of the "average" similarity
-  additive_similarity <- NULL
-  # loop over all similarity measures user specified in similarity_measures
-  for(measure in similarity_measures){
-    # take 1-each measure times their proportion to the average
-    additive_similarity <- cbind(additive_similarity, (1-dataframe[, measure])*(1/length(similarity_measures)))
-  }
-  # sum all of the similarities up and take 1 - mean(1-similarity)^k
-  # and add column of average similarity to original dataframe
-  dataframe[, "avgSimilarity"] <- 1 - (rowSums(additive_similarity)^k)
-  #browser()
+  # calculate average weighted similarity measure
+  dataframe <- averageSimilarity(dataframe, similarity_measures, k)
   # base models w/ all respondents
   assign(paste("baseModel", sub('\\. *', '', formula)[2], sep="_"), 
          zelig(formula, data=dataframe, model=model_type, cite=F), envir = .GlobalEnv)

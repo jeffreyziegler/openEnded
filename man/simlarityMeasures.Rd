@@ -2,13 +2,13 @@
 % Please edit documentation in R/similarityMeasures.R
 \name{similarityMeasures}
 \alias{similarityMeasures}
-\title{Individual Similarity Measures}
+\title{Calculate Similarity Measures}
 \usage{
 similarityMeasures(
   dataframe,
   prompt,
   response,
-  similarity_measures_to_calculate = NULL,
+  similarity_measures_to_calculate = c("jaccard"),
   ngrams = 3
 )
 }
@@ -19,18 +19,18 @@ similarityMeasures(
 
 \item{response}{Vector/column within `dataframe` that contains the open-ended response.}
 
-\item{ngrams}{The number of grams/segments words should be broken into. Default n=3.}
+\item{similarity_measures_to_calculate}{Vector of similarity measures to calculate. Possible values for measure_type = c("osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"). Default is "jaccard".}
 
-\item{measure_type}{Possible values for measure_type = c("osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"). Default is "jaccard".}
+\item{ngrams}{The number of grams/segments words should be broken into. Default n=3.}
 }
 \value{
-Vector of similarity measures (same length as input dataframe)
+Original dataframe plus columns with similarity measures (same length as input dataframe)
 }
 \description{
-Calculate individual measures of similarity between prompt and response in open-ended manipulation check.
+Calculate individual or multiple measures of similarity between prompt and response in open-ended manipulation check.
 }
 \examples{
-simlarityMeasures(replication_complete.cases, prompt="textViewed", response="validityCheck", ngrams=3)
+replication_complete.cases <- simlarityMeasures(replication_complete.cases, prompt="textViewed", response="validityCheck", ngrams=3)
 
 }
 \seealso{

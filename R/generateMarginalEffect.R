@@ -27,8 +27,6 @@ generateMarginalEffect <- function(temp_model){
     # combinations of covariate levels
     unique_elements <- NULL
     for(covar in 1:ncol(covariate_data)){
-     # browser()
-      
       unique_elements <- c(unique(na.omit(covariate_data[, covar])), unique_elements)
       # take only those unique elements of unique_elements
       unique_elements <- unique(unique_elements)

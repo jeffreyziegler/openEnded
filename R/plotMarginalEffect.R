@@ -1,8 +1,7 @@
-#' @title Plot Marginal Effects
+#' @title Plot Marginal Effect
 #' @description 
 #' Plot the marginal effects varying which respondents are down-weighted in a regression.
 #' 
-#' @param dataframe Dataframe that contains the predictors and outcome.
 #' @param regression_models List that contains a vector or vectors of the regression models for which you wish to estimate the marginal effects. If you only want to plot one outcome at a time, you only need to include one vector (c(baseModel, listwiseModel, weightedModel)). If you wish to display more than one outcome at a time, this is possible with facets, but you need to place each outcome in a separate list in the argument (list(c(baseModel1, listwiseModel1,weightedModel1), c(baseModel2, listwiseModel2, weightedModel2))).
 #'
 #' @return Plot of the marginal effects for the full, listwise, and weighted samples given the formula the user specified.
