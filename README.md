@@ -14,8 +14,7 @@ Alternatively, download the .tar.gz file from the main repository and install th
 
 If you use this software, please cite the original paper:
 
-``
-@article{ziegler2020,
+``@article{ziegler2020,
 
   title={A Text-As-Data Approach for Using Open-Ended Responses as Manipulation Checks},
   
@@ -27,5 +26,4 @@ If you use this software, please cite the original paper:
   
   url = {https://github.com/jeffreyziegler/openEnded}
   
-}
-``
+}``
