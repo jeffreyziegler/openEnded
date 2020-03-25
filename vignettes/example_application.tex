@@ -1,0 +1,262 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage{graphicx,textcomp}
+\usepackage{natbib}
+\usepackage{setspace}
+\usepackage{fullpage}
+\usepackage{subcaption}
+\usepackage{color}
+\usepackage[reqno]{amsmath}
+\usepackage{amsthm}
+\usepackage{fancyvrb}
+\usepackage{amssymb,enumerate}
+\usepackage[all]{xy}
+\usepackage{endnotes}
+\usepackage{adjustbox}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{lscape}
+\newtheorem{com}{Comment}
+\usepackage{float}
+
+\newtheorem{lem} {Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+\newtheorem{cor}{Corollary}
+\usepackage{enumitem}
+\usepackage{layouts}
+\usepackage{longtable}
+\newtheorem{obs}{Observation}
+\usepackage[compact]{titlesec}
+\usepackage{dcolumn}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{multirow}
+\usepackage{lscape}
+\newcolumntype{.}{D{.}{.}{-1}}
+\newcolumntype{d}[1]{D{.}{.}{#1}}
+\definecolor{light-gray}{gray}{0.65}
+\usepackage{url}
+
+\usepackage{listings}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\newcommand*{\MyPath}{../../}%
+%\usepackage[hyphens]{url}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks = true,
+	linkcolor=Blue,   % color of internal links
+	citecolor=Blue,   % color of links to bibliography
+	urlcolor=Blue,    % color of external links
+	pagebackref=true,
+	implicit=false,
+	bookmarks=true,
+	bookmarksopen=true,
+	pdfdisplaydoctitle=true
+}
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   commentstyle=\color{codegreen},
+		keywordstyle=\color{magenta},
+		numberstyle=\tiny\color{codegray},
+		stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+
+%"mystyle" code listing set
+\lstset{style=mystyle} 
+\newcommand{\Sref}[1]{Section~\ref{#1}}
+\newtheorem{hyp}{Hypothesis}
+
+\title{Example Application: A Text-As-Data Approach for Using Open-Ended Responses as Manipulation Checks}
+\date{}
+\author{Jeffrey Ziegler}
+
+\begin{document}
+	\maketitle
+	
+	\section*{Introduction, Installing and Loading Package}
+	
+	\noindent The example comes from a study that investigated rhetorical responsiveness in the Catholic Church and the motivations for the Pope to be responsive. Participants of the online survey experiments were limited to self-identified Catholics. The survey was carried out among a nationally representative quota sample from each Brazil and Mexico (N$\approx$2,500).
+	
+	Respondents were presented with three selected news headlines on the same topic outlining recent statements made by the Pope (conflict, human rights, socio-political issues, economy, and control/religious issues). These messages were meant to represent the typical language content and phrasing used in the media regarding the Pope's statements. Respondents were randomly assigned to receive news stories pertaining to either (1) a topic that they believed is most important (the "responsive" treatment), or (2) one of the four other issue areas ("non-responsive"). Within those respondents that received "non-responsive" messages, there was an even probability of assignment to each topic.
+	
+	Prior to the outcome questions, but after the textual treatment, participants were asked to recall the stories they read on the previous page in an open-ended response manipulation check. Afterward, respondents then expressed the degree to which they thought the Church is responsive, the degree to which they trusted the Church, and the degree to which they anticipated increasing their organizational participation.
+	
+	As a visual reference, the distributions for the $n$-gram similarity measures (Jaccard and cosine) in each country are shown in Figure~\ref{fig:jaccardDistanceMeasures_ziegler} and \ref{fig:cosineDistanceMeasures_ziegler}. To create these figures, we first need to download and install the library from my \href{https://github.com/jeffreyziegler/openEnded}{GitHub} webpage, which researchers can do by executing the code below into their \texttt{R} console. All of the documentation for the functions and arguments included in the \texttt{R} package can be found on the \href{https://github.com/jeffreyziegler/openEnded}{GitHub} webpage.
+	
+	\lstinputlisting[language=R, firstline=1, lastline=3]{../vignetteExample.R}  
+
+Next, users can load in their data and specify which vector within their dataframe contains the prompts and which vector contains the responses to calculate their similarity measures. I import the data for the survey experiments in Brazil and Mexico, which are also located on the \href{https://github.com/jeffreyziegler/openEnded}{GitHub} webpage. The shortcut for the link to the data is provided below.
+
+\lstinputlisting[language=R, firstline=4,lastline=6, basicstyle=\footnotesize]{../vignetteExample.R}
+
+The vector of responses to the open-ended manipulation check are stored in
+ 
+\texttt{\footnotesize replication\_complete.cases\$validityCheck} and the treatments that respondents read are stored in \texttt{\footnotesize replication\_complete.cases\$textViewed}. To create our various $n$-gram similarity measures, such as the Jaccard and the cosine of the angle between the vectors, we can execute the function \texttt{\footnotesize similarityMeasures} as seen below. We continue to assign $n$=3 as we did in the manuscript.
+
+\lstinputlisting[language=R, firstline=9,lastline=17, basicstyle=\tiny]{../vignetteExample.R}
+
+With our similarity measures in hand, we can plot the distribution of all respondents with the function  \texttt{\footnotesize plotMeasures}. Figure~\ref{fig:jaccardDistanceMeasures_ziegler}, specifically, shows the plotted output from the code below. The default \texttt{\footnotesize plotMeasures} does not currently include the ability to label select responses, this feature will be made available in future versions of the package.
+
+\lstinputlisting[language=R, firstline=19,lastline=22, basicstyle=\footnotesize]{../vignetteExample.R}
+
+The distributions, especially in Mexico, are more highly skewed to the left than the data presented in the manuscript from Kane (2019), which means that more respondents will be down-weighted with lower levels of $k$. Nevertheless, the Jaccard and cosine measures are high correlated, as seen in Figure~\ref{fig:distanceMeasuresCorrPlot_ziegler}, which can be created with the function \texttt{\footnotesize plotSimilarityCorr}.
+
+\lstinputlisting[language=R, firstline=24,lastline=29, basicstyle=\small]{../vignetteExample.R}
+\clearpage
+\begin{figure}[h!]
+	\caption{\footnotesize{Distribution of raw Jaccard similarity measures for respondents in Brazil and Mexico.}}
+	\label{fig:jaccardDistanceMeasures_ziegler}
+	\centering
+	\begin{subfigure}{0.725\textwidth}\centering
+		\caption{\footnotesize{Brazil}}
+		\includegraphics[width=.95\textwidth]{\MyPath/figures/jaccardDistanceMeasuresPT-BR.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.725\textwidth}\centering
+		\caption{\footnotesize{Mexico}}
+		\includegraphics[width=.95\textwidth]{\MyPath/figures/jaccardDistanceMeasuresES.pdf}\\
+	\end{subfigure}\\
+	\raggedright   \footnotesize{\textit{Notes}: The mean distance for each country is represented by the vertical dotted-line. %Two exemplar responses have been selected from each country.
+	}
+\end{figure}
+\newpage
+\begin{figure}[h!]
+	\caption{\footnotesize{Distribution of raw cosine of angles for respondents in Brazil and Mexico.}}
+	\label{fig:cosineDistanceMeasures_ziegler}
+	\centering
+	\begin{subfigure}{0.725\textwidth}\centering
+		\caption{\footnotesize{Brazil}}
+		\includegraphics[width=.95\textwidth]{\MyPath/figures/cosineDistanceMeasuresPT-BR.pdf}\\
+	\end{subfigure}
+	\begin{subfigure}{0.725\textwidth}\centering
+		\caption{\footnotesize{Mexico}}
+		\includegraphics[width=.95\textwidth]{\MyPath/figures/cosineDistanceMeasuresES.pdf}\\
+	\end{subfigure}\\
+	\raggedright   \footnotesize{\textit{Notes}: The mean distance for each country is represented by the vertical dotted-line.}
+\end{figure}
+
+\clearpage
+
+
+\begin{figure}[h!]
+	\centering
+	\caption{\footnotesize{Correlation between distance measures for respondents in Brazil and Mexico.}}
+	\label{fig:distanceMeasuresCorrPlot_ziegler}
+	
+	\includegraphics[width=.625\textwidth]{\MyPath/figures/distanceMeasuresCorrPlot_ziegler.pdf}
+	
+\end{figure}
+
+Now, I present the regression results from models estimated with (1) the full sample irrespective of attention, (2) a reduced sample using list-wise deletion based on an arbitrary threshold set for participants that "passed" (those respondents with weights $\geq$ 0.1), and (3)  a weighted least squares model based on the weighted average of the Jaccard and cosine similarity measures.
+
+To execute the three regressions, we can run the function \texttt{\footnotesize regressionComparison}, which estimates the three separate regression models. You do not need to calculate the average similarity, the function computes this for you, you only need to define a value for $k$ and which similarity measures to include in the averaged measure. The output of the regression models from this function will be automatically loaded into your global environment (for instance, labeled as name of outcome + "\_baseModel") and can be used as typical regression objects in \texttt{R}, so we can get the estimated coefficients to reproduce Table~\ref{tab:interactAllOutcomes}.
+
+\lstinputlisting[language=R, firstline=31,lastline=48, basicstyle=\scriptsize]{../vignetteExample.R}
+
+\begin{landscape}
+	\begin{table}[h!]
+		\caption{\footnotesize{Estimated coefficients from (1) regression with all observations, (2) weighted regression based on attentiveness, (3) regression on subsetted sample based on attentiveness.}}
+		\label{tab:interactAllOutcomes}
+		
+		\centering
+		\begin{adjustbox}{max width=1.45\textwidth}
+			\begin{tabular}{l c c c c c c c c c c c c c c c }
+				\hline
+				\\[-3.8ex]\hline 
+				\\[-1.8ex] 
+				& \multicolumn{14}{c}{\textit{Outcome:}} \\ 
+				\cline{2-16} \\[-1.8ex]
+				& (1)& (2)& (3) & (4)  & (5)  & (6)  & (7) & (8)& (9) &(10) & (11) & (12)& (13)& (14)& (15)\\
+				& Trust & Trust & Trust & Responsive& Responsive & Responsive & Volunteer& Volunteer & Volunteer & Attendance& Attendance & Attendance & Petition & Petition & Petition \\
+				\\[-1.8ex]
+				\cline{1-16}
+				\\[-1.8ex]		
+				
+				%				Constant                      & $6.12$ & $6.11$ & $6.05$ & $5.47$ & $5.47$ & $5.34$ & $5.13$  & $5.24$  & $5.11$  & $5.45$ & $5.49$ & $5.41$ & $7.05$ & $7.18$ & $7.07$ \\
+				%                                 & $(0.09)$     & $(0.09)$     & $(0.10)$     & $(0.10)$     & $(0.10)$     & $(0.10)$     & $(0.09)$      & $(0.10)$      & $(0.10)$      & $(0.09)$     & $(0.09)$     & $(0.09)$     & $(0.09)$     & $(0.09)$     & $(0.10)$     \\
+				Responsive papal messaging                      & $-0.27$  & $-0.29$  & $-0.30$  & $-0.06$      & $-0.06$      & $-0.04$      & $-0.54$ & $-0.67$ & $-0.63$ & $-0.36$ & $-0.42$ & $-0.40$ & $-0.15$      & $-0.15$      & $-0.18$      \\
+				& $(0.13)$     & $(0.13)$     & $(0.14)$     & $(0.14)$     & $(0.14)$     & $(0.14)$     & $(0.14)$      & $(0.14)$      & $(0.14)$      & $(0.13)$     & $(0.13)$     & $(0.13)$     & $(0.13)$     & $(0.13)$     & $(0.14)$     \\
+				
+				&&&&&&&&&&&&&&&\\                              
+				Attendance (Monthly)             & $0.86$ & $0.93$ & $0.92$ & $0.89$ & $0.89$ & $0.91$ & $1.31$  & $1.31$  & $1.34$  & $1.49$ & $1.52$ & $1.57$ & $0.59$ & $0.59$ & $0.64$ \\
+				& $(0.12)$     & $(0.13)$     & $(0.13)$     & $(0.13)$     & $(0.13)$     & $(0.14)$     & $(0.13)$      & $(0.14)$      & $(0.14)$      & $(0.12)$     & $(0.13)$     & $(0.13)$     & $(0.12)$     & $(0.13)$     & $(0.13)$     \\
+				&&&&&&&&&&&&&&&\\                                                               
+				Attendance (Weekly)              & $1.83$ & $1.90$ & $1.91$ & $1.70$ & $1.70$ & $1.73$ & $2.39$  & $2.41$  & $2.46$  & $2.28$ & $2.34$ & $2.35$ & $0.94$ & $0.95$ & $0.99$ \\
+				& $(0.12)$     & $(0.12)$     & $(0.13)$     & $(0.13)$     & $(0.13)$     & $(0.13)$     & $(0.12)$      & $(0.13)$      & $(0.13)$      & $(0.12)$     & $(0.12)$     & $(0.12)$     & $(0.12)$     & $(0.12)$     & $(0.12)$     \\
+				
+				&&&&&&&&&&&&&&&\\                              
+				Responsiveness*Attendance (Monthly) & $0.42$   & $0.43$   & $0.48$   & $0.14$       & $0.14$       & $0.19$       & $0.65$  & $0.72$  & $0.73$  & $0.48$  & $0.50$  & $0.48$  & $0.09$       & $0.11$       & $0.14$       \\
+				& $(0.18)$     & $(0.18)$     & $(0.19)$     & $(0.19)$     & $(0.19)$     & $(0.19)$     & $(0.19)$      & $(0.19)$      & $(0.20)$      & $(0.17)$     & $(0.18)$     & $(0.18)$     & $(0.18)$     & $(0.18)$     & $(0.19)$     \\
+				
+				&&&&&&&&&&&&&&&\\                              
+				Responsiveness*Attendance (Weekly)  & $0.46$  & $0.48$  & $0.49$  & $0.38$   & $0.38$   & $0.40$   & $0.72$  & $0.83$  & $0.78$  & $0.63$ & $0.67$ & $0.65$ & $0.28$       & $0.24$       & $0.26$       \\
+				& $(0.17)$     & $(0.17)$     & $(0.18)$     & $(0.18)$     & $(0.18)$     & $(0.18)$     & $(0.17)$      & $(0.18)$      & $(0.19)$      & $(0.16)$     & $(0.17)$     & $(0.17)$     & $(0.17)$     & $(0.17)$     & $(0.18)$     \\
+				
+				\\[-1.8ex]\hline  \\[-1.8ex] 
+				Weights         &              & \checkmark &              &  &        \checkmark      & &               &  \checkmark &              & &         \checkmark     & &              & \checkmark&  \\
+				\\[-1.8ex]\hline  \\[-1.8ex] 
+				R$^2$                            & 0.13         & 0.14         & 0.14         & 0.11         & 0.11         & 0.11         & 0.19          & 0.20          & 0.21          & 0.20         & 0.21         & 0.21         & 0.04         & 0.04         & 0.04         \\
+				Adj. R$^2$                       & 0.13         & 0.14         & 0.14         & 0.11         & 0.11         & 0.11         & 0.19          & 0.20          & 0.21          & 0.20         & 0.21         & 0.21         & 0.04         & 0.04         & 0.04         \\
+				N                        & 4206         & 3936         & 3698         & 3936         & 3936         & 3698         & 4206          & 3936          & 3698          & 4206         & 3936         & 3698         & 4206         & 3936         & 3698         \\
+				%RMSE                             & 2.21         & 1.40         & 2.19         & 1.43         & 1.43         & 2.25         & 2.30          & 1.48          & 2.29          & 2.15         & 1.38         & 2.14         & 2.20         & 1.37         & 2.18         \\	
+				\\\hline\\[-3.8ex]
+				\hline \\[-1.8ex]
+				
+				\multicolumn{16}{l}{\footnotesize{\textit{Notes:} %All models include pre-treatment variables such as age, gender, region of residence, and political preferences among issues similar to the news treatments.
+						Standard errors are presented in the parentheses.%, $p<0.001$, $p<0.01$, $^*p<0.05$.
+				}}
+			\end{tabular}
+		\end{adjustbox}
+	\end{table}
+\end{landscape}
+
+Once we have estimated our three regression models, we can estimate and plot the average marginal effects with the function \texttt{\footnotesize plotMarginalEffect}. Users must only insert the relevant regression models they have estimated with \texttt{\footnotesize regressionComparison} previously. The output of \texttt{\footnotesize plotMarginalEffect} is a plot of the marginal effects given the user-defined formula that was used to estimate the regression models, such as Figure~\ref{fig:marginalFDshiftZiegler}.
+
+\lstinputlisting[language=R, firstline=58,lastline=69, basicstyle=\scriptsize]{../vignetteExample.R} 
+
+\begin{figure}[h!]
+	\centering
+	\caption{\footnotesize{Marginal treatment effects by church attendance and sample.}}
+	\label{fig:marginalFDshiftZiegler}
+	
+	\includegraphics[width=.95\textwidth]{\MyPath/figures/marginalFDshift_ziegler.pdf}\\
+	\vspace{.1cm}
+	\raggedright   \footnotesize{\textit{Notes}: The figure plots marginal effect of the treatment measured by the change in the predicted level of support among the outcome categories. %, while holding all other variables constant at their observed, within country median values. 
+		The mean marginal effects is represented by the solid point, while the 2.5\%-97.5\% percentiles of the sampling distributions are designated by the vertical lines. The marginal effects of each country are generated from 10,000 simulations that use asymptotic normal approximation to the log-likelihood to estimate the first difference for each category of attendance.}\\
+\end{figure}
+
+The main findings, presented in Figure~\ref{fig:marginalFDshiftZiegler}, indicate that dedicated members (those that attend church weekly) were more likely to increase their anticipated future attendance of Church services. Again, the full estimated coefficients are shown in Table~\ref{tab:interactAllOutcomes}. When asked how strongly respondents agree with the statement, "I plan to attend more church services in the future", members that attend church services weekly were more likely to increase their support if they receive responsiveness. %Holding all of the respondents' pre-treatment characteristics and preferences constant at their pooled sample means,
+
+The estimated average treatment effect of receiving papal responsiveness for weekly attendees was associated with about a 0.3 point increase in the strength of their anticipated attendance of church services. These findings suggest that respondents' were more willing to view the Church as responsive, and more willing to participate in the Church, when they receive responsive papal statements. The results do not change substantively or statistically when the full sample is used versus samples that exclude or weight respondents based on attention. This signals that inattentive participants and attentive participants do not respond to the outcomes systematically different, or at least not enough to alter the overall treatment effects. To double-check, I simulate the average treatment effect for those that would pass and fail the manipulation check by randomly varying the threshold of document similarity for passing.
+
+To investigate whether attentive and inattentive participants respond differently in a systematic manner, which may explain some of the null estimates of the overall ATEs in Figure~\ref{fig:marginalFDshiftZiegler}, I simulate the distribution of ATE for compliers and non-compliers. We can achieve this by executing \texttt{\footnotesize plotComplierATE}, and the output is Figure~\ref{fig:marginalShiftCompliers_ziegler}. The user merely inputs the cutoff threshold which represents that maximum value of attention at which a participant would be considered a non-complier, while $n$ references how many simulations the user wishes to perform (the default is 100 which matches the application in the manuscript).
+\newpage
+\lstinputlisting[language=R, firstline=71,lastline=74, basicstyle=\scriptsize]{../vignetteExample.R}
+
+\begin{figure}[h!]
+	\centering
+	\caption{\footnotesize{Distribution of average marginal treatment effects by church attendance for respondents that likely absorbed the treatment and those that did not.}}
+	\label{fig:marginalShiftCompliers_ziegler}
+	\includegraphics[width=.75\textwidth]{\MyPath/figures/marginalShiftCompliers_ziegler.pdf}\\
+	\vspace{.1cm}
+	
+	\raggedright   \footnotesize{\textit{Notes}: The figure plots the median marginal effects of respondents that "passed" the manipulation check. The vertical lines represent the 2.5\%-97.5\% percentiles of the sampling distribution of the average marginal effect for compliers and non-compliers.  Some distributions are so narrow that they are subsumed by the point estimate. Each distribution consists of $N=100$.
+	}\\
+\end{figure}
+
+Figure~\ref{fig:marginalShiftCompliers_ziegler} plots the median treatment effect for 100 simulations of the ATE for participants above (those that "passed") and below (those that "failed") a randomly selected weight threshold. Beginning with those participants that would pass the manipulation check, we can see that the ATE typically increases as respondents' church attendance increases. Moreover, the distribution is tightly compact showing little variation in the ATE of compliers. Non-compliers do not consistently differ from compliers, with the exception of a few outcomes. Rather, non-compliers appear to add more uncertainty and heterogeneity into the average treatment effect, which may explain the lack of precision for the ATEs in Figure~\ref{fig:marginalFDshiftZiegler}.
+
+\end{document}
