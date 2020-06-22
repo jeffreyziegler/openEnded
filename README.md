@@ -18,7 +18,7 @@ Check out the <a href="https://github.com/jeffreyziegler/openEnded/blob/master/v
 
 **Citation:**
 
-If you use this software, please cite the original paper (<a href="https://osf.io/preprints/socarxiv/ztgpm " target="_blank">link</a> to most current version):
+If you use this software, please cite the original paper (<a href="https://osf.io/preprints/socarxiv/ztgpm " target="_blank">link</a> to current version):
 
 ```bash
 @article{ziegler2020,
