@@ -21,9 +21,8 @@
 plotSimilarity <- function(dataframe, measure, xlab){
   ggplot(dataframe, aes(x = dataframe[, measure])) +  
     geom_histogram(binwidth=.025, colour="black", fill="white") + 
-    lims(x=c(0,1))+
     labs(x=xlab, y="Number of Respondents")+ theme_classic() +
-    geom_vline(aes(xintercept=mean(jaccardDist, na.rm=T)),   # Ignore NA values for mean
+    geom_vline(aes(xintercept=mean(dataframe[, measure], na.rm=T)),
                color="black", linetype="dashed", size=1.5) +
     theme(legend.position="none", axis.title = element_text(size=30), axis.text = element_text(size=25))  
 }
