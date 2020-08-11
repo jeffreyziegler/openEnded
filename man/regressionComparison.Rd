@@ -4,7 +4,8 @@
 \alias{regressionComparison}
 \title{Estimate regression models for comparison}
 \usage{
-regressionComparison(dataframe, formula, similarity_measures, k, model_type)
+regressionComparison(dataframe, formula, similarity_measures, k,
+  model_type)
 }
 \arguments{
 \item{dataframe}{Dataframe from which you will select the outcome, predictors, and weights for the regression model.}

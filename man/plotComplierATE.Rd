@@ -4,16 +4,9 @@
 \alias{plotComplierATE}
 \title{Plot the ATE for Compliers and Non-Compliers}
 \usage{
-plotComplierATE(
-  dataframe = NULL,
-  similarity_measures = NULL,
-  bounds = NULL,
-  n = 100,
-  seed = 12345,
-  formulas = NULL,
-  model_type = NULL,
-  k = NULL
-)
+plotComplierATE(dataframe = NULL, similarity_measures = NULL,
+  bounds = NULL, n = 100, seed = 12345, formulas = NULL,
+  model_type = NULL, k = NULL)
 }
 \arguments{
 \item{dataframe}{Dataframe from which we will estimate our regression model.}

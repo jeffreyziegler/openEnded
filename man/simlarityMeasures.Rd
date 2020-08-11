@@ -4,13 +4,8 @@
 \alias{similarityMeasures}
 \title{Calculate Similarity Measures}
 \usage{
-similarityMeasures(
-  dataframe,
-  prompt,
-  response,
-  similarity_measures_to_calculate = c("jaccard"),
-  ngrams = 3
-)
+similarityMeasures(dataframe, prompt, response,
+  similarity_measures_to_calculate = c("jaccard"), ngrams = 3)
 }
 \arguments{
 \item{dataframe}{Dataframe that contains the prompt and response of the open-ended manipulation check.}

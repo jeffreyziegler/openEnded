@@ -1,8 +1,7 @@
 Package: openEnded
 Title: Tools for Implementing and Analyzing Open-Ended Responses and Manipulation Checks
 Version: 1.0
-Authors@R: 
-    person(given = "Jeffrey",
+Authors@R: person(given = "Jeffrey",
            family = "Ziegler",
            role = c("aut", "cre"),
            email = "jeffrey.ziegler@emory.edu")
