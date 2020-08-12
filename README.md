@@ -14,7 +14,7 @@ Alternatively, download the .tar.gz file from the main repository and install th
 
 **Use:**
 
-Check out the <a href="https://github.com/jeffreyziegler/openEnded/blob/master/vignettes/example_application.pdf" target="_blank"> application</a> in ``vignettes/`` for a step-by-step guide of how to reproduce the example in the original paper.
+Check out the <a href="https://jeffreyziegler.github.io/pages/openEnded.html" target="_blank"> instructions and vignettes</a> for a step-by-step guide of how to reproduce the example in the original paper, as well as how to apply the suggestions for the paper to your own data needs.
 
 **Citation:**
 
