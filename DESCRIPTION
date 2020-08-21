@@ -1,5 +1,5 @@
 Package: openEnded
-Title: Tools for Implementing and Analyzing Open-Ended Responses and Manipulation Checks
+Title: Tools for Implementing and Analyzing Open-Ended Responses as Manipulation Checks
 Version: 1.0
 Authors@R: person(given = "Jeffrey",
            family = "Ziegler",
@@ -15,9 +15,15 @@ Imports:
 	stringr,
 	ggplot2,
 	tidyr,
+	data.table,
+	reshape2,
 	Zelig,
 	ggcorrplot,
+	texreg,
 	plyr,
+	MASS,
+	RcppAlgos,
+	tidyverse,
 	ggpubr,
 	rmarkdown,
 	knitr

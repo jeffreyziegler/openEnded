@@ -1,58 +1,76 @@
 #' @title Generate Marginal Effects
 #' 
 #' @description 
-#' This is an internal function that helps calculate the overall treatment effects differing how inattentive participants are down-weighted.
+#' Internal function that helps calculate the overall treatment effects differing how inattentive participants are down-weighted.
 #' 
-#' @param temp_model Regression object indicating one model that you wish to calculate the marginal effects for.
-#'
-#' @return Dataframe of marginal effects.
+#' @param unique_covars Model matrix of unique characteristics used to generate treatment effects.
+#' @param simulated_betas −XBetas that have been simulated from mvrnorm distribution
+#' @param diff_labs 
+#' 
+#' @return Dataframe of marginal effects with corresponding 95% confidence intervals.
 #'
 #' @author Jeffrey Ziegler (<jeffrey.ziegler[at]emory.edu>)
 #' @examples
-#' generateMarginalEffect(baseModel_trustChurch_postTreat)
+#' generateMarginalEffect(generateMarginalEffect(unique_covars = unique_dummies, 
+#' simulated_betas=sim_betas, diff_labs=fd_labs[,1]))
 #' 
-#' @seealso  \code{\link{regressionComparison}} \code{\link{executeMarginalEffect}} \code{\link{plotMarginalEffect}} \code{\link{plotComplierATE}}
+#' @seealso  \code{\link{regressionComparison}}
 #' 
 #' @rdname generateMarginalEffect
 #' @export
 
-generateMarginalEffect <- function(temp_model){
-    # store the names of the variables used in the regression formula
-    formula_vars <- as.character(attr(terms(temp_model$formula), "variables"))
-    # skip past outcome and "list()"
-
-    covariate_data <- temp_model$data[, formula_vars[3:length(formula_vars)]]
-    # create list of unique elements for each covariate
-    # to iterate over for to estimate the marginal effect for all
-    # combinations of covariate levels
-    unique_elements <- NULL
-    for(covar in 1:ncol(covariate_data)){
-      unique_elements <- c(unique(na.omit(covariate_data[, covar])), unique_elements)
-      # take only those unique elements of unique_elements
-      unique_elements <- unique(unique_elements)
-    }
-
-    # flip list around so that the "first" covariate 
-    # comes first in the list
-    unique_elements <- unique_elements[rev.default(seq_along(unique_elements))]
-    # so in the example, 'Concordant' comes first
+generateMarginalEffect <- function(unique_covars, simulated_betas, diff_labs){
+  # go over all the possible combos of treatments
+  predicted_probs <- matrix(ncol=dim(simulated_betas)[2], nrow=dim(simulated_betas)[1])
+  for(covar_level in 1:dim(unique_covars)[1]){
+    predicted_probs[, covar_level] <- simulated_betas%*%unique_covars[covar_level, ]
+  }
+  # now we have each "scenario" as a column w/ all
+  # n simulations (default=10,000), so the first should be 
+  # intercept, which is control and reference category
+  # for a simple interaction b/w a categorical variable
+  # and treatment (i.e. control independent)
+  colnames(predicted_probs) <- colnames(simulated_betas)
+  
+  # next, go over each scenario and compare it to the others
+  # to get 1st diffs. Some are plausible, others are not
+  # Democrat from alienate to appease (predicted_probs[1,] - predicted_probs[4,])
+  # or Independent control to Democrat control, which is not plausible
+  
+  # should be 36 combos for example
+  # 9! / 2! * (9 - 2)!
+  # (9*8) / factorial(2)
+  level_combos <- as.data.frame(t(combn(diff_labs, 2, simplify=T)))
+  combo_labs <- level_combos %>% unite("combo", V1:V2, na.rm = T, remove = F, sep="_")
+  combo_labs <- combo_labs[,"combo"]
+  
+  sim_diffs <- data.frame(t(
+    matrix(
+      unlist(
+        comboGeneral(ncol(predicted_probs), 2, repetition = F, FUN = function(y){
+          (1/(1+exp(-predicted_probs[,y[2]]))) - (1/(1+exp(-predicted_probs[,y[1]])))
+        }
+        )
+      ), 
+      nrow=choose(9, 2),
+      byrow=T)
+  ))
+  names(sim_diffs) <- combo_labs
+  
+  # create df fill with point estimates, lower and upper bounds
+  CI_data <- data.frame(covar_cats = rep(NA, length(combo_labs)),
+                        first_diffs = rep(NA, length(combo_labs)),
+                        lower_CI = rep(NA, length(combo_labs)),
+                        upper_CI = rep(NA, length(combo_labs)))
+  for(i in 1:length(combo_labs)){
+    CI_data[i, "first_diffs"] <- mean(sim_diffs[,i])
+    CI_data[i, "covar_cats"] <- names(sim_diffs)[i]
+    CI_interval <- quantile(sim_diffs[,i], 
+                            probs=c((1-0.95)/2, (1-(1-0.95)/2)))
+    CI_data[i, "lower_CI"] <- CI_interval[1]
+    CI_data[i, "upper_CI"] <- CI_interval[2]
     
-    # execute the setx function for all combos of covariates
-    fd <- NULL
-
-    for(j in unique_elements[[2]]){
-      setx_elements <- NULL
-      for(k in unique_elements[[1]]){
-      setx_elements <- c(setx(temp_model, Concordant=k, #names(covariate_data)[2]==j, 
-                              attendanceBin=j), #names(covariate_data)[1]==k),
-                              setx_elements)
-      }
-      fd <- cbind(fd, unlist(sim(temp_model, x = setx_elements[[2]], x1 = setx_elements[[1]], num = 10000)$sim.out[["x1"]][["fd"]]))    
-    }
-
-    fd <- as.data.frame(fd)
-    names(fd) <- c("Never/yearly (Non-responsive to Responsive)", 
-                    "Weekly (Non-responsive to Responsive)",
-                    "Monthly (Non-responsive to Responsive)")
-    return(fd)
-}   
+  }
+  return(CI_data)
+}
+ 

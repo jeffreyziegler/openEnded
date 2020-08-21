@@ -4,23 +4,28 @@
 \alias{generateMarginalEffect}
 \title{Generate Marginal Effects}
 \usage{
-generateMarginalEffect(temp_model)
+generateMarginalEffect(unique_covars, simulated_betas, diff_labs)
 }
 \arguments{
-\item{temp_model}{Regression object indicating one model that you wish to calculate the marginal effects for.}
+\item{unique_covars}{Model matrix of unique characteristics used to generate treatment effects.}
+
+\item{simulated_betas}{−XBetas that have been simulated from mvrnorm distribution}
+
+\item{diff_labs}{}
 }
 \value{
-Dataframe of marginal effects.
+Dataframe of marginal effects with corresponding 95% confidence intervals.
 }
 \description{
-This is an internal function that helps calculate the overall treatment effects differing how inattentive participants are down-weighted.
+Internal function that helps calculate the overall treatment effects differing how inattentive participants are down-weighted.
 }
 \examples{
-generateMarginalEffect(baseModel_trustChurch_postTreat)
+generateMarginalEffect(generateMarginalEffect(unique_covars = unique_dummies, 
+simulated_betas=sim_betas, diff_labs=fd_labs[,1]))
 
 }
 \seealso{
-\code{\link{regressionComparison}} \code{\link{executeMarginalEffect}} \code{\link{plotMarginalEffect}} \code{\link{plotComplierATE}}
+\code{\link{regressionComparison}}
 }
 \author{
 Jeffrey Ziegler (<jeffrey.ziegler[at]emory.edu>)

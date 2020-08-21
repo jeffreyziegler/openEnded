@@ -14,7 +14,7 @@ Alternatively, download the .tar.gz file from the main repository and install th
 
 **Use:**
 
-Check out the <a href="https://jeffreyziegler.github.io/pages/openEnded.html" target="_blank"> instructions and vignettes</a> for a step-by-step guide of how to reproduce the example in the original paper, as well as how to apply the suggestions for the paper to your own data needs.
+Check out the <a href="https://github.com/jeffreyziegler/openEnded/blob/master/vignettes/example_application.pdf" target="_blank"> application</a> in ``vignettes/`` for a step-by-step guide of how to reproduce the example in the original paper.
 
 **Citation:**
 
@@ -24,7 +24,7 @@ If you use this software, please cite the original paper (<a href="https://osf.i
 @article{ziegler2020,
   title={A Text-As-Data Approach For Using Open-Ended Responses As Manipulation Checks},
   author={Ziegler, Jeffrey},
-  journal={Conditionally Accepted at Political Analysis},
+  journal={Working Paper},
   year={2020},  
   url = {https://github.com/jeffreyziegler/openEnded}
 }

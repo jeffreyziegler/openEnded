@@ -4,22 +4,41 @@
 \alias{regressionComparison}
 \title{Estimate regression models for comparison}
 \usage{
-regressionComparison(dataframe, formula, similarity_measures, k,
-  model_type)
+regressionComparison(dataframe = NULL, formula = NULL,
+  plot_treatment = NULL, plot_interact_x = NULL,
+  similarity_measures = NULL, k = 3, model_type = NULL,
+  user_seed = 5, n_sims = 10000, correct_vec = NULL,
+  display_plot = F, stable_x = T, plot_path = NULL, print_regs = F)
 }
 \arguments{
 \item{dataframe}{Dataframe from which you will select the outcome, predictors, and weights for the regression model.}
 
 \item{formula}{Symbolic representation of the model to be estimated. This is written in "typical" R language (i.e. y ~ x1 + x2), such that y is the outcome variable and x1 and x2 are the predictors.}
 
+\item{plot_treatment}{Character indicating vector in dataframe that's the treatment. Default is NULL, so users must specify for the function to work.}
+
+\item{plot_interact_x}{Character indicating vector in dataframe that treatment should be plotted with. If there is an interaction in the formula, plot_interact_x is likely that variable. Default is NULL, so users must specify for the function to work.}
+
 \item{similarity_measures}{Vector(s) from dataframe that contains the similarity measures to be used as weights.}
 
 \item{k}{The penalty that you want to set for down-weighting inattentive respondents. Lower levels of k down-weight low attention participants more severely.}
 
 \item{model_type}{Statistical model to estimate. Currently support OLS and logistic ("ls", "logit").}
+
+\item{user_seed}{Since we make random pulls from the multivariate normal distibution, set seed to get same results again. Default=5.}
+
+\item{n_sims}{Since we make random pulls from the multivariate normal distibution, set seed to get same results again. Default=10000.}
+
+\item{correct_vec}{Character indicating vector in dataframe that indicates whether a respondent answered "correctly" as determined by a human coder. Default is NULL, so if a user doesn't include anything function will automatically set a threshold of "correctness" based on a respondent's average similarity (i.e. those respondents that score below say 0.1 will not be included in the "list-wise deletion" sample.}
+
+\item{stable_x}{Indicates whether plot_interact_x is continuous (stable_x=FALSE) or a factor (stable_x=TRUE). Currently the package only supports TRUE.}
+
+\item{plot_path}{If user wants to save figure, please provide a character vector for the file path in which the plot should be download. User must decide extension (pdf, jpg, png) in file path.}
+
+\item{print_regs}{Return table of estimated regression coefficients and fit statistics formatted for LaTeX using texreg(). Default=FALSE.}
 }
 \value{
-Three regression objects are estimated and loaded to your global environment as separate Zelig objects. They are named baseModel, listwiseModel, and weightedModel.
+Three regression objects are estimated and loaded to your global environment as separate Zelig objects. They are named baseModel_"outcome variable", listwiseModel_"outcome variable", and weightedModel_"outcome variable".
 }
 \description{
 Compare the overall results varying on which respondents are included in the model based on attention.
@@ -31,11 +50,24 @@ This function generates three regressions with:
 (3) weighted sample by formula outlined in Ziegler (2020, 5) for average similarity.
 }
 \examples{
-regressionComparison(formula=trustChurch_postTreat ~ Concordant*attendanceBin, dataframe=replication_complete.cases, k=3, similarity_measures=c("jaccardDist", "cosineDist"), model_type="ls")
-
+regressionComparison(dataframe=kaneData, 
+  formula=SelectTrump ~ NewsStoryConditions*ideologyFactor3, 
+  plot_treatment="NewsStoryConditions",
+  plot_interact_x="ideologyFactor3",
+  similarity_measures=c("jaccardDist", "cosineDist"),
+  k=3, 
+  model_type="logit", 
+  user_seed=5,  
+  n_sims=10000, 
+  correct_vec="correct", 
+  display_plot=T,
+  plot_path=NULL, 
+  print_regs=T
+  )
+   
 }
 \seealso{
-\code{\link{plotMarginalEffect}} \code{\link{plotComplierATE}}
+\code{\link{complierATE}} \code{\link{generateMarginalEffect}}
 }
 \author{
 Jeffrey Ziegler (<jeffrey.ziegler[at]emory.edu>)

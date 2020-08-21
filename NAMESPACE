@@ -2,11 +2,8 @@
 
 export(ATEcutoff)
 export(averageSimilarity)
-export(executeMarginalEffect)
 export(generateMarginalEffect)
 export(pkgTest)
-export(plotComplierATE)
-export(plotMarginalEffect)
 export(plotSimilarity)
 export(plotSimilarityCorr)
 export(regressionComparison)
