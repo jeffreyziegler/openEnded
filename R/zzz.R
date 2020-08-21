@@ -4,6 +4,19 @@
 
 .onAttach <- function(libname, pkgname) {
   # load and install all dependency libraries
-  lapply(c("stringdist", "stringr", "ggplot2", "tidyr", "Zelig", "ggcorrplot", "plyr", "ggpubr"), pkgTest)
+  lapply(c("stringdist",
+           "stringr",
+           "ggplot2",
+           "tidyr",
+           "data.table",
+           "reshape2",
+           "Zelig",
+           "ggcorrplot",
+           "texreg",
+           "plyr",
+           "MASS",
+           "RcppAlgos",
+           "tidyverse",
+           "ggpubr"), pkgTest)
   invisible()
 }
