@@ -4,10 +4,12 @@
 \alias{ATEcutoff}
 \title{Create ATE Cutoff}
 \usage{
-ATEcutoff(formula, n_sims, similarity_measures, model_type, k = 3,
-  bounds = c(0.1, 0.2))
+ATEcutoff(dataframe, formula, similarity_measures, model_type, k, bounds,
+  user_seed, plot_treatment = NULL, plot_interact_x = NULL, stable_x)
 }
 \arguments{
+\item{dataframe}{Dataframe from which we will estimate our regression model.}
+
 \item{formula}{Symbolic representation of the model to be estimated. This is written in "typical" R language (i.e. y ~ x1 + x2), such that y is the outcome variable and x1 and x2 are the predictors.}
 
 \item{similarity_measures}{Vector(s) from dataframe that contains the similarity measures to be used as weights. Possible values for measure_type = c("osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"). Default is "jaccard".}
@@ -17,8 +19,6 @@ ATEcutoff(formula, n_sims, similarity_measures, model_type, k = 3,
 \item{k}{The penalty that you want to set for down-weighting inattentive respondents. Lower levels of k down-weight low attention participants more severely.}
 
 \item{bounds}{Minimum and maximum of uniform distribution we should draw cutoff values between.}
-
-\item{dataframe}{Dataframe from which we will estimate our regression model.}
 }
 \value{
 Dataframe of all estimated marginal effects that make up the sampling distribution for participants that did and did not receive the treatment.
