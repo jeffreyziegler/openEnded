@@ -17,6 +17,7 @@ Imports:
 	tidyr,
 	data.table,
 	reshape2,
+	ggridges,
 	Zelig,
 	ggcorrplot,
 	texreg,

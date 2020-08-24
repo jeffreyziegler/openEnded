@@ -15,6 +15,7 @@
            "texreg",
            "plyr",
            "MASS",
+           "ggridges",
            "RcppAlgos",
            "tidyverse",
            "ggpubr"), pkgTest)

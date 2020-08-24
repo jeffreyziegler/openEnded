@@ -119,7 +119,7 @@ ATEcutoff <- function(dataframe,
             pass1stDiffPlotData[scenario, "treat_from_to"] <- paste(rev(strsplit(as.character(pass1stDiffPlotData[scenario, "treat_from_to"]), "\\s+")[[1]]), collapse= " ")
         }
         
-        if(str_detect(pass1stDiffPlotData[scenario, c("treat_from_to")], "Appease to Alienate")){
+        if(str_detect(pass1stDiffPlotData[scenario, c("treat_from_to")], "United to Disunited")){
             pass1stDiffPlotData[scenario, "first_diffs"] <- -1*pass1stDiffPlotData[scenario, "first_diffs"]
             pass1stDiffPlotData[scenario, "treat_from_to"] <- paste(rev(strsplit(as.character(pass1stDiffPlotData[scenario, "treat_from_to"]), "\\s+")[[1]]), collapse= " ")
         }
