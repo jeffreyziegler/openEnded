@@ -2,6 +2,7 @@
 
 export(ATEcutoff)
 export(averageSimilarity)
+export(complierATE)
 export(generateMarginalEffect)
 export(pkgTest)
 export(plotSimilarity)

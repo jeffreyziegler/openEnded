@@ -20,7 +20,7 @@
 #' @rdname ATEcutoff
 #' @export
 
-ATEcutoff <- function(dataframe, similarity_measures, formula, model_type, k, bounds){
+ATEcutoff <- function(formula, n_sims, similarity_measures, model_type, k=3, bounds=c(0.1, 0.2)){
     cutoff <- 1-runif(1, min=bounds[1], max=bounds[2])
     dataframe <- averageSimilarity(dataframe, similarity_measures,  k)
     dataframe$passFail <- ifelse(dataframe[, "avgSimilarity"] >= cutoff, 0, 1)
@@ -32,7 +32,7 @@ ATEcutoff <- function(dataframe, similarity_measures, formula, model_type, k, bo
     pass1stDiffPlotData <- rbind(generateMarginalEffect(temp_model = passReg),
                                  generateMarginalEffect(temp_model = failReg))
     
-    pass1stDiffPlotData$subset <- c(rep("pass", 10000), rep("fail", 10000))
+    pass1stDiffPlotData$subset <- c(rep("pass", n_sims), rep("fail", n_sims))
     
     pass1stDiffPlotData$outcome <- str_to_title(gsub("_.*","", gsub('([[:upper:]])', ' \\1', gsub("~.*","", formula)[2])))
     pass1stDiffPlotData$cutoff <- cutoff
