@@ -67,8 +67,7 @@ ATEcutoff <- function(dataframe,
         # plot simulated first diffs
         pass1stDiffPlotData[[sample]] <- generateMarginalEffect(unique_covars = unique_dummies, 
                                                                 simulated_betas=sim_betas, 
-                                                                diff_labs=fd_labs[,1],
-                                                                raw=F)
+                                                                diff_labs=fd_labs[,1])
         #browser()
         
         #pass1stDiffPlotData[[sample]] <- reshape2::melt(pass1stDiffPlotData[[sample]])
