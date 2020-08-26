@@ -18,11 +18,19 @@
 #' @seealso \code{\link{similarityMeasures}} \code{\link{plotSimilarityCorr}}
 #' @export
 
-plotSimilarity <- function(dataframe, measure, xlab){
-  ggplot(dataframe, aes(x = dataframe[, measure])) +  
+plotSimilarity <- function(dataframe, measure, plot_path=NULL){
+  p1 <- ggplot(dataframe, aes(x = dataframe[, measure])) +  
     geom_histogram(binwidth=.025, colour="black", fill="white") + 
-    labs(x=xlab, y="Number of Respondents")+ theme_classic() +
+    labs(x=paste( "\n", str_to_title(gsub('([[:upper:]])', ' \\1', measure)), sep=""), y="Number of Respondents")+ theme_classic() +
     geom_vline(aes(xintercept=mean(dataframe[, measure], na.rm=T)),
                color="black", linetype="dashed", size=1.5) +
     theme(legend.position="none", axis.title = element_text(size=30), axis.text = element_text(size=25))  
+  return(p1)
+  
+  # check to see if user wants to save plot
+  if(!is.null(plot_path)){
+    pdf(file=plot_path)
+    print(p1)
+    dev.off()
+  }
 }

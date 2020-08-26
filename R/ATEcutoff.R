@@ -30,7 +30,7 @@ ATEcutoff <- function(dataframe,
                       plot_treatment=NULL,
                       plot_interact_x=NULL, 
                       stable_x){
-    #browser()
+    
     cutoff <- runif(1, min=bounds[1], max=bounds[2])
     dataframe <- averageSimilarity(dataframe, similarity_measures,  k)
     dataframe$passFail <- ifelse(dataframe[, "avgSimilarity"] <= cutoff, 0, 1)
@@ -104,10 +104,6 @@ ATEcutoff <- function(dataframe,
     weird_data <- pass1stDiffPlotData %>% group_by(treat_from_to, interact_x) %>% summarise(n = n(), .groups = 'drop') %>% filter(n==10000)
     
     for(scenario in 1:dim(pass1stDiffPlotData)[1]){
-        # might need to do one for when k=1 and k=10
-        # or when user_seed=1, 10, or 100, for some reason
-        # the plots create an extra group
-       #browser()
         
         if(do.call(paste0, pass1stDiffPlotData[scenario, c("treat_from_to", "interact_x")])%in% do.call(paste0, weird_data[, c("treat_from_to", "interact_x")])){
             pass1stDiffPlotData[scenario, "first_diffs"] <- -1*pass1stDiffPlotData[scenario, "first_diffs"]

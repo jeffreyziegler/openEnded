@@ -22,8 +22,13 @@
 
 similarityMeasures <- function(dataframe, prompt, response, similarity_measures_to_calculate=c("jaccard"), ngrams=3){
   for(measure_to_calc in similarity_measures_to_calculate){
-    dataframe[, paste(measure_to_calc, "Dist", sep="")] <-   1-stringdist(enc2utf8(dataframe[, prompt]), enc2utf8(dataframe[, response]), useBytes=TRUE,  method=measure_to_calc, q=ngrams)
+    dataframe[, paste(measure_to_calc, 
+                      "Similarity", 
+                      sep="")] <-   1-stringdist(enc2utf8(dataframe[, prompt]), 
+                                                                                enc2utf8(dataframe[, response]), 
+                                                                                useBytes=TRUE,  
+                                                                                method=measure_to_calc, q=ngrams)
   }
-  dataframe$cosineDist <- ifelse(is.na(dataframe$cosineDist), 0, dataframe$cosineDist)
+  dataframe$cosineSimilarity <- ifelse(is.na(dataframe$cosineSimilarity), 0, dataframe$cosineSimilarity)
   return(dataframe)
 }

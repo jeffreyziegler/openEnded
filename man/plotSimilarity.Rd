@@ -4,7 +4,7 @@
 \alias{plotSimilarity}
 \title{plotSimilarity}
 \usage{
-plotSimilarity(dataframe, measure, xlab)
+plotSimilarity(dataframe, measure, plot_path = NULL)
 }
 \arguments{
 \item{dataframe}{Dataframe that contains the similarity measures you want to plot.}
