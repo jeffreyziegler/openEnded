@@ -21,6 +21,7 @@ Imports:
 	Zelig,
 	ggcorrplot,
 	texreg,
+	text2vec,
 	plyr,
 	MASS,
 	RcppAlgos,

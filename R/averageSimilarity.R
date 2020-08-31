@@ -17,7 +17,8 @@
 #' @rdname averageSimilarity
 #' @export
 
-averageSimilarity <- function(dataframe, similarity_measures, k){
+averageSimilarity <- function(dataframe, similarity_measures, k, up_down_weight="down"){
+    
     # create empty vector to fill with each component of the "average" similarity
     additive_similarity <- NULL
     # loop over all similarity measures user specified in similarity_measures
@@ -25,9 +26,16 @@ averageSimilarity <- function(dataframe, similarity_measures, k){
         # take 1-each measure times their proportion to the average
         additive_similarity <- cbind(additive_similarity, (1-dataframe[, measure])*(1/length(similarity_measures)))
     }
-    # sum all of the similarities up and take 1 - mean(1-similarity)^k
-    # and add column of average similarity to original dataframe
-    dataframe[, "avgSimilarity"] <- 1 - (rowSums(additive_similarity)^k)
+    if(up_down_weight=="down"){
+        # sum all of the similarities up and take 1 - mean(1-similarity)^k
+        # and add column of average similarity to original dataframe
+        dataframe[, "avgSimilarity"] <- 1 - (rowSums(additive_similarity)^k)
+    }
+    if(up_down_weight=="up"){
+        # sum all of the similarities up and take 1/mean(1-similarity)
+        # and add column of average similarity to original dataframe
+        dataframe[, "avgSimilarity"] <- 1/(rowSums(additive_similarity))
+    }
     
     return(dataframe)
 }

@@ -4,7 +4,8 @@
 \alias{averageSimilarity}
 \title{Calculate Average Similarity}
 \usage{
-averageSimilarity(dataframe, similarity_measures, k)
+averageSimilarity(dataframe, similarity_measures, k,
+  up_down_weight = "down")
 }
 \arguments{
 \item{dataframe}{Dataframe from which you will select the similarity measures to be used to calculate the weights.}

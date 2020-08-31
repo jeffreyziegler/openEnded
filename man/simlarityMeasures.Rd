@@ -5,7 +5,7 @@
 \title{Calculate Similarity Measures}
 \usage{
 similarityMeasures(dataframe, prompt, response,
-  similarity_measures_to_calculate = c("jaccard"), ngrams = 3)
+  n_gram_measures_to_calculate = c("jaccard"), ngrams = 3)
 }
 \arguments{
 \item{dataframe}{Dataframe that contains the prompt and response of the open-ended manipulation check.}
@@ -14,7 +14,7 @@ similarityMeasures(dataframe, prompt, response,
 
 \item{response}{Vector/column within `dataframe` that contains the open-ended response.}
 
-\item{similarity_measures_to_calculate}{Vector of similarity measures to calculate. Possible values for measure_type = c("osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"). Default is "jaccard".}
+\item{n_gram_measures_to_calculate}{Vector of n-gram similarity measures to calculate. Possible values for measure_type = c("osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"). Default is "jaccard".}
 
 \item{ngrams}{The number of grams/segments words should be broken into. Default n=3.}
 }

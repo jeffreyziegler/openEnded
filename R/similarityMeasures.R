@@ -5,7 +5,7 @@
 #' @param dataframe Dataframe that contains the prompt and response of the open-ended manipulation check.
 #' @param prompt Vector/column within `dataframe` that contains the prompt.
 #' @param response Vector/column within `dataframe` that contains the open-ended response.
-#' @param similarity_measures_to_calculate Vector of similarity measures to calculate. Possible values for measure_type = c("osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"). Default is "jaccard".
+#' @param n_gram_measures_to_calculate Vector of n-gram similarity measures to calculate. Possible values for measure_type = c("osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"). Default is "jaccard".
 #' @param ngrams The number of grams/segments words should be broken into. Default n=3.
 #'
 #' @return Original dataframe plus columns with similarity measures (same length as input dataframe)
@@ -20,8 +20,8 @@
 #' @rdname simlarityMeasures
 #' @export
 
-similarityMeasures <- function(dataframe, prompt, response, similarity_measures_to_calculate=c("jaccard"), ngrams=3){
-  for(measure_to_calc in similarity_measures_to_calculate){
+similarityMeasures <- function(dataframe, prompt, response, n_gram_measures_to_calculate=c("jaccard"), ngrams=3){
+  for(measure_to_calc in n_gram_measures_to_calculate){
     dataframe[, paste(measure_to_calc, 
                       "Similarity", 
                       sep="")] <-   1-stringdist(enc2utf8(dataframe[, prompt]), 

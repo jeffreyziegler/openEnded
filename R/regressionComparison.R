@@ -54,6 +54,7 @@ regressionComparison <- function(dataframe=NULL,
                                  similarity_measures=NULL,
                                  k=3, 
                                  model_type=NULL, 
+                                 up_down_weight="down",
                                  user_seed=5,  
                                  n_sims=10000, 
                                  correct_vec=NULL, 
@@ -72,9 +73,9 @@ regressionComparison <- function(dataframe=NULL,
   
   # calculate average weighted similarity measure
   if(is.null(similarity_measures)){
-    dataframe <- averageSimilarity(dataframe, similarity_measures, k)
+    dataframe <- averageSimilarity(dataframe, similarity_measures=c("jaccard", "cosine"), k, up_down_weight)
   }
-  dataframe <- averageSimilarity(dataframe, similarity_measures, k)
+  dataframe <- averageSimilarity(dataframe, similarity_measures, k, up_down_weight)
   
   # estimate models
   if(model_type=="ols"){
@@ -184,7 +185,7 @@ regressionComparison <- function(dataframe=NULL,
     # might need to do one for when k=1 and k=10
     # or when user_seed=1, 10, or 100, for some reason
     # the plots create an extra group
-    #browser()
+   # browser()
     
     if(do.call(paste0, firstDiffPlotData[scenario, c("treat_from_to", "column_label")])%in% do.call(paste0, weird_data[, c("treat_from_to", "column_label")])){
       firstDiffPlotData[scenario, "first_diffs"] <- -1*firstDiffPlotData[scenario, "first_diffs"]
@@ -200,12 +201,12 @@ regressionComparison <- function(dataframe=NULL,
       firstDiffPlotData[scenario, "treat_from_to"] <- paste(rev(strsplit(as.character(firstDiffPlotData[scenario, "treat_from_to"]), "\\s+")[[1]]), collapse= " ")
     }
     
-    if(str_detect(firstDiffPlotData[scenario, c("treat_from_to")], "Appease to Alienate")){
-      firstDiffPlotData[scenario, "first_diffs"] <- -1*firstDiffPlotData[scenario, "first_diffs"]
-      firstDiffPlotData[scenario, "lower_CI"] <- -1*firstDiffPlotData[scenario, "lower_CI"]
-      firstDiffPlotData[scenario, "upper_CI"] <- -1*firstDiffPlotData[scenario, "upper_CI"]
-      firstDiffPlotData[scenario, "treat_from_to"] <- paste(rev(strsplit(as.character(firstDiffPlotData[scenario, "treat_from_to"]), "\\s+")[[1]]), collapse= " ")
-    }
+    # if(str_detect(firstDiffPlotData[scenario, c("treat_from_to")], "Appease to Alienate")){
+    #   firstDiffPlotData[scenario, "first_diffs"] <- -1*firstDiffPlotData[scenario, "first_diffs"]
+    #   firstDiffPlotData[scenario, "lower_CI"] <- -1*firstDiffPlotData[scenario, "lower_CI"]
+    #   firstDiffPlotData[scenario, "upper_CI"] <- -1*firstDiffPlotData[scenario, "upper_CI"]
+    #   firstDiffPlotData[scenario, "treat_from_to"] <- paste(rev(strsplit(as.character(firstDiffPlotData[scenario, "treat_from_to"]), "\\s+")[[1]]), collapse= " ")
+    # }
   }
   
   # generate and temporarily save plot of treatment effects
