@@ -121,7 +121,7 @@ regressionComparison <- function(dataframe=NULL,
     # print output of regressions 
     print(texreg(list(base_model, listwise_model, weighted_model),
                  custom.model.names = c("Unweighted Model", "List-wise Deleted Model", "Weighted Model"),
-                 digits=3, stars = c(0.01, 0.05, 0.1)))
+                 digits=3, stars = c(0.001, 0.01, 0.05)))
   }
   # plot marginal effects
   # first, store the names of the variables used in the regression formula
