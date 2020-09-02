@@ -4,16 +4,19 @@
 \alias{predictAttention}
 \title{Predict Attention Among Respondents}
 \usage{
-predictAttention(dataframe = NULL, formula = NULL,
-  plot_treatment = NULL, plot_interact_x = NULL,
-  similarity_measures = c("jaccardDist", "cosineDist"), bounds = c(0.1,
-  0.2), n = 100, user_seed = 5, model_type = NULL, k = 3,
-  display_plot = T, plot_path = NULL, stable_x)
+predictAttention(dataframe = NULL, attention_formula = NULL,
+  similarity_measures = c("jaccardSimilarity", "cosineSimilarity"),
+  correct_vec = NULL, model_type = NULL, k = 3,
+  up_down_weight = "down")
 }
 \arguments{
-\item{dataframe}{}
+\item{dataframe}{Dataframe from which you will select attention, predictors for attention, etc. for the regression model.}
 
-\item{formula}{Symbolic representation of the model to be estimated. This is written in "typical" R language (i.e. y ~ x1 + x2), such that y is the outcome variable (attention) and x_1,..., x_J are the predictors.}
+\item{k}{The penalty that you want to set for down-weighting inattentive respondents. Lower levels of k down-weight low attention participants more severely.}
+
+\item{up_down_weight}{Do you want to up-weight or down-weight? Default="down".}
+
+\item{attention_predictors}{Symbolic representation of the model to be estimated. This is written in "typical" R language (i.e. x1 + x2). Do not need to specify y or outcome variable, it's assigned internally.}
 }
 \value{
 

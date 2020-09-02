@@ -15,6 +15,7 @@
            "ggcorrplot",
            "texreg",
            "text2vec",
+           "AER",
            "plyr",
            "MASS",
            "ggridges",

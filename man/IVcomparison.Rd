@@ -11,7 +11,7 @@ IVcomparison(dataframe = NULL, formula = NULL,
 \arguments{
 \item{dataframe}{Dataframe from which you will select the outcome, predictors, and weights for the regression model.}
 
-\item{formula}{Symbolic representation of the model to be estimated. This is written in "typical" R language (i.e. y ~ x1 + x2), such that y is the outcome variable and x_1,..., x_J are the predictors.}
+\item{formula}{Symbolic representation of the model to be estimated. This is written in "typical" R language (i.e. y ~ x1 + x2), such that y is the outcome variable and x_1,..., x_j are the predictors.}
 
 \item{similarity_measures}{Vector(s) from dataframe that contains the similarity measures to be used as weights.}
 

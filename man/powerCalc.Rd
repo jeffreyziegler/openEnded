@@ -27,9 +27,7 @@ Conduct a power calculation to make sure that you retain enough respondents to c
 \examples{
 powerCalc()
 
-}
-\seealso{
-\code{\link{}} \code{\link{}}
+
 }
 \author{
 Jeffrey Ziegler (<jeffrey.ziegler[at]emory.edu>)

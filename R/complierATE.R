@@ -8,6 +8,7 @@
 #' @param k The penalty that you want to set for down-weighting inattentive respondents. Lower levels of k down-weight low attention participants more severely. 
 #' @param model_type Statistical model to estimate. Currently support OLS and logistic ("ls", "logit").
 #' @param bounds Minimum and maximum of uniform distribution we should draw cutoff values between.
+#' @param k_plot Do you want to see a histogram of the cutoffs used in the simulations?
 #' @param n Number of simulation rounds/iterations.
 #' 
 #' @return Plot of the marginal effects for "compliers" and "non-compliers".
@@ -30,7 +31,8 @@ complierATE <- function(dataframe=NULL,
                         k=3,
                         display_plot=T,
                         plot_path=NULL,
-                        stable_x){
+                        stable_x, 
+                        k_plot=F){
   
   # the vertical lines throw warnings from ggplot that are not concerning
   # so we'll depress them for now and then turn them back on
@@ -81,6 +83,11 @@ complierATE <- function(dataframe=NULL,
     dev.off()
   }
   
+  if(k_plot==T){
+    hist(unique(bootstrappedData$cutoff), xlab="Cutoff Value", 
+               main="", cex.lab=1.5, cex.axis=1.5)
+  }
+ 
   # turn warnings back on
   options(warn = defaultW)
 }

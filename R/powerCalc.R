@@ -16,7 +16,6 @@
 #' @examples
 #' powerCalc()
 #' 
-#' @seealso \code{\link{}} \code{\link{}}
 #' 
 #' @rdname powerCalc
 #' @export

@@ -2,8 +2,10 @@
 #' @description 
 #' Estimate a linear regression in which attention is the outcome, and the user defines the characteristics used to predict attention.
 #' 
-#' @param dataframe 
-#' @param formula Symbolic representation of the model to be estimated. This is written in "typical" R language (i.e. y ~ x1 + x2), such that y is the outcome variable (attention) and x_1,..., x_J are the predictors.
+#' @param dataframe Dataframe from which you will select attention, predictors for attention, etc. for the regression model.
+#' @param attention_predictors Symbolic representation of the model to be estimated. This is written in "typical" R language (i.e. x1 + x2). Do not need to specify y or outcome variable, it's assigned internally.
+#' @param k The penalty that you want to set for down-weighting inattentive respondents. Lower levels of k down-weight low attention participants more severely. 
+#' @param up_down_weight Do you want to up-weight or down-weight? Default="down".
 
 #' @return 
 #'
@@ -14,18 +16,51 @@
 #' @export
 
 predictAttention <- function(dataframe=NULL, 
-                        formula=NULL, 
-                        plot_treatment=NULL,
-                        plot_interact_x=NULL,
-                        similarity_measures=c("jaccardDist", "cosineDist"),
-                        bounds=c(0.1, 0.2), 
-                        n=100, 
-                        user_seed=5, 
-                        model_type=NULL, 
-                        k=3,
-                        display_plot=T,
-                        plot_path=NULL,
-                        stable_x){
+                             attention_formula=NULL, 
+                             similarity_measures=c("jaccardSimilarity", "cosineSimilarity"),
+                             correct_vec=NULL,
+                             model_type=NULL, 
+                             k=3,
+                             up_down_weight="down"){
   
+  # check basics of function by user
+  if(is.null(dataframe) | is.null(formula)){
+    error("You need to provide a dataframe and formula for the regression comparison.")
+  }
+  if(is.null(model_type)){
+    error("You need to provide a family/model type (currently support OLS and logit).")
+  }
+  
+  # calculate average weighted similarity measure
+  if(is.null(similarity_measures)){
+    dataframe <- averageSimilarity(dataframe, similarity_measures=c("jaccardSimilarity", "cosineSimilarity"), k, up_down_weight)
+  }
+  dataframe <- averageSimilarity(dataframe, similarity_measures, k, up_down_weight)
+  
+  dataframe$zeroAnswer <- ifelse(dataframe$avgSimilarity==0, 1, 0)
+  #browser()
+  if(model_type=="logit"){
+    attention_glm <- glm(paste("avgSimilarity~", attention_formula), data=dataframe)
+    correct_glm <- glm(paste(correct_vec, "~", attention_formula), data=dataframe)
+    zero_glm <- glm(paste("zeroAnswer~", attention_formula), data=dataframe)
+  }
+  # assign models to global environment
+  # base models w/ all respondents
+  assign(paste("attentionModel", sub('\\. *', '', attention_formula)[2], sep="_"),
+         attention_glm, envir = .GlobalEnv)
+  # removing inattentive participants
+  assign(paste("correctnessModel", sub('\\. *', '', attention_formula)[2], sep="_"),
+         correct_glm, envir = .GlobalEnv)
+  # re-weighting
+  assign(paste("zeroedParticipantsModel", sub('\\. *', '', attention_formula)[2], sep="_"),
+         zero_glm, envir = .GlobalEnv)
+  
+  # check if user wants to print regressions tables for latex
+  #if(print_regs==T){
+    # print output of regressions 
+    print(texreg(list(attention_glm, correct_glm, zero_glm),
+                 custom.model.names = c("Attention", "Correct Response", "Zero Respondents Removed"),
+                 digits=3, stars = c(0.001, 0.01, 0.05)))
+  #}
   
 }

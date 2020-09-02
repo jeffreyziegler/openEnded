@@ -63,6 +63,10 @@ regressionComparison <- function(dataframe=NULL,
                                  stable_x=T,
                                  plot_path=NULL, 
                                  print_regs=F){
+  # dplyr and tidy throw warning 
+  # so we'll depress them for now and then turn them back on
+  defaultW <- getOption("warn") 
+  options(warn = -1) 
   
   # check basics of function by user
   if(is.null(dataframe) | is.null(formula)){
@@ -239,12 +243,16 @@ regressionComparison <- function(dataframe=NULL,
   if(display_plot==T){
     print(compareRegPlot)
   }
+  
   # check to see if user wants to save plot
   if(!is.null(plot_path)){
       pdf(file=plot_path, width=11, height=7)
       print(compareRegPlot)
       dev.off()
       #error("Need to provide a path to save the plot")
-    }
+  }
+  
+  # turn warnings back on
+  options(warn = defaultW)
 }
 
