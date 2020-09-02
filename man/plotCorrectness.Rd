@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotCorrectness.R
 \name{plotCorrectness}
 \alias{plotCorrectness}
-\title{plotCorrectness}
+\title{Plot Similarity Measures and Objective Correctness}
 \usage{
 plotCorrectness(dataframe, measures, correct_vec, plot_path = NULL)
 }
@@ -14,7 +14,7 @@ plotCorrectness(dataframe, measures, correct_vec, plot_path = NULL)
 \item{correct_vec}{Character indicating vector in dataframe that indicates whether a respondent answered "correctly" as determined by a human coder. Must have this for plot to be used, Default=NULL.}
 }
 \description{
-
+Plot respondents by similarity measure (user selects 2) and objective correctness.
 }
 \examples{
 

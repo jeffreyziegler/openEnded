@@ -16,6 +16,7 @@
 #' @param correct_vec Character indicating vector in dataframe that indicates whether a respondent answered "correctly" as determined by a human coder. Default is NULL, so if a user doesn't include anything function will automatically set a threshold of "correctness" based on a respondent's average similarity (i.e. those respondents that score below say 0.1 will not be included in the "list-wise deletion" sample.
 #' @param similarity_measures Vector(s) from dataframe that contains the similarity measures to be used as weights. 
 #' @param k The penalty that you want to set for down-weighting inattentive respondents. Lower levels of k down-weight low attention participants more severely. 
+#' @param up_down_weight Do you want to up-weight or down-weight?
 #' @param user_seed Since we make random pulls from the multivariate normal distibution, set seed to get same results again. Default=5. 
 #' @param n_sims Since we make random pulls from the multivariate normal distibution, set seed to get same results again. Default=10000. 
 #' @param print_regs Return table of estimated regression coefficients and fit statistics formatted for LaTeX using texreg(). Default=FALSE.
@@ -73,7 +74,7 @@ regressionComparison <- function(dataframe=NULL,
   
   # calculate average weighted similarity measure
   if(is.null(similarity_measures)){
-    dataframe <- averageSimilarity(dataframe, similarity_measures=c("jaccard", "cosine"), k, up_down_weight)
+    dataframe <- averageSimilarity(dataframe, similarity_measures=c("jaccardSimilarity", "cosineSimilarity"), k, up_down_weight)
   }
   dataframe <- averageSimilarity(dataframe, similarity_measures, k, up_down_weight)
   

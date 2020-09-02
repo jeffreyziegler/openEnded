@@ -32,6 +32,11 @@ complierATE <- function(dataframe=NULL,
                         plot_path=NULL,
                         stable_x){
   
+  # the vertical lines throw warnings from ggplot that are not concerning
+  # so we'll depress them for now and then turn them back on
+  defaultW <- getOption("warn") 
+  options(warn = -1) 
+  
   bootstrappedData <- data.frame()
   set.seed(user_seed)
     for(i in 1:n){
@@ -75,4 +80,7 @@ complierATE <- function(dataframe=NULL,
     print(p1)
     dev.off()
   }
+  
+  # turn warnings back on
+  options(warn = defaultW)
 }

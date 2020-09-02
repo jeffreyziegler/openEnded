@@ -4,8 +4,21 @@
 \alias{createWordEmbeddings}
 \title{Create Word Embeddings}
 \usage{
-createWordEmbeddings(df, prompts, responses, user_seed = 5,
-  prune_len = 1)
+createWordEmbeddings(dataframe, prompts, responses, user_seed = 5,
+  prune_len = 2, language = "en")
+}
+\arguments{
+\item{dataframe}{Dataframe from which we will estimate our regression model.}
+
+\item{prompts}{Vector/column in dataframe that contain the prompt that each respondnet saw.}
+
+\item{responses}{Vector/column in dataframe that records participants' recollection of prompt.}
+
+\item{user_seed}{Set seed for reproducibility. Default = 5.}
+
+\item{prune_len}{Cut words that are not frequently mentioned. Default = 2 (must be mentioned at least twice in the corpus).}
+
+\item{language}{What language are the prompts and responses? Default is English ('en'), Spanish ('es') and Brazilian-Portuguese ('br-pt') will hopefully be available soon.}
 }
 \description{
 Generate comparison between the prompt and participants' responses in a latent word2vec space.
@@ -15,7 +28,7 @@ Generate comparison between the prompt and participants' responses in a latent w
 
 }
 \seealso{
-\code{\link{}}
+\code{\link{similarityMeasures}}
 }
 \author{
 Jeffrey Ziegler (<jeffrey.ziegler[at]emory.edu>)

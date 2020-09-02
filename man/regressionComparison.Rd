@@ -26,6 +26,8 @@ regressionComparison(dataframe = NULL, formula = NULL,
 
 \item{model_type}{Statistical model to estimate. Currently support OLS and logistic ("ls", "logit").}
 
+\item{up_down_weight}{Do you want to up-weight or down-weight?}
+
 \item{user_seed}{Since we make random pulls from the multivariate normal distibution, set seed to get same results again. Default=5.}
 
 \item{n_sims}{Since we make random pulls from the multivariate normal distibution, set seed to get same results again. Default=10000.}

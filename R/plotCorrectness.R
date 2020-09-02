@@ -1,7 +1,7 @@
-#' @title plotCorrectness
+#' @title Plot Similarity Measures and Objective Correctness
 #' 
 #' @description 
-#' 
+#' Plot respondents by similarity measure (user selects 2) and objective correctness.
 #'
 #' @param dataframe Dataframe that contains the similarity measures you want to plot.
 #' @param measures Two characters representing the vectors in dataframe that contain the similarity measures you want to compare.

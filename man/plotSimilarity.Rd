@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotSimilarity.R
 \name{plotSimilarity}
 \alias{plotSimilarity}
-\title{plotSimilarity}
+\title{Plot Similarity Measures}
 \usage{
 plotSimilarity(dataframe, measure, plot_path = NULL)
 }
@@ -18,9 +18,6 @@ This function plots the raw distribution for a given similarity measure.
 }
 \examples{
 
-brazil_rows <- which(replication_complete.cases$Country=="Brazil")
-plotSimilarity(dataframe=replication_complete.cases[brazil_rows,],
-            measure="jaccardDist", xlab="Jaccard Similarity")
 
 }
 \seealso{

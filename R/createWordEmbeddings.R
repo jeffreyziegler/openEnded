@@ -2,69 +2,89 @@
 #' @description
 #' Generate comparison between the prompt and participants' responses in a latent word2vec space.
 #'
-#'
+#' @param dataframe Dataframe from which we will estimate our regression model.
+#' @param prompts Vector/column in dataframe that contain the prompt that each respondnet saw.
+#' @param responses Vector/column in dataframe that records participants' recollection of prompt.
+#' @param user_seed Set seed for reproducibility. Default = 5.
+#' @param prune_len Cut words that are not frequently mentioned. Default = 2 (must be mentioned at least twice in the corpus).
+#' @param language What language are the prompts and responses? Default is English ('en'), Spanish ('es') and Brazilian-Portuguese ('br-pt') will hopefully be available soon.
+#' 
 #' @author Jeffrey Ziegler (<jeffrey.ziegler[at]emory.edu>)
 #' @examples
 #' 
 #' 
 #' @rdname createWordEmbeddings
-#' @seealso \code{\link{}}
+#' @seealso \code{\link{similarityMeasures}}
 #' @export
 
-createWordEmbeddings <- function(df, prompts, responses, user_seed=5, prune_len=1){
-  # Create iterator over tokens
+createWordEmbeddings <- function(dataframe, prompts, responses, user_seed=5, prune_len=2, language="en"){
+  # create iterator over tokens
   # first, put the prompts
-  #, then the rest of the responses
-  word_ls <- c(space_tokenizer(prepText(unique(df[, prompts]))), space_tokenizer(prepText(df[, responses])))
+  # then the rest of the responses
+  word_ls <- c(space_tokenizer(prepText(unique(dataframe[, prompts]))), 
+               space_tokenizer(prepText(dataframe[, responses])))
   
-  # Create vocabulary. Terms will be unigrams (simple words).
+  # create vocabulary
+  # terms will be unigrams (simple words)
   it <- itoken(word_ls, progressbar = F)
   vocab <- create_vocabulary(it)
+  
   # words should not be too uncommon
-  # can't calculate meaningful word vector for a word which we saw only once in the entire corpus
+  # can't calculate meaningful word vector for 
+  # a word which we saw only once in the entire corpus
   # Default: Take only words which appear at least once
   limited_vocab <- prune_vocabulary(vocab, term_count_min = prune_len)
   
-  # now have 377 terms in vocab
   # ready to construct term-co-occurence matrix (TCM)
-  # Use our filtered vocabulary
+  # use our filtered vocabulary
   vectorizer <- vocab_vectorizer(limited_vocab)
+  
   # create normal dtm
   dtm <- create_dtm(it, vectorizer)
+  
   # use window of 5 for context words
   tcm <- create_tcm(it, vectorizer, skip_grams_window = 5)
   
-  # with TCM matrix can factorize it via GloVe algorithm
-  # text2vec uses a parallel stochastic gradient descent algorithm
+  # set seed first for reproducibility
   set.seed(user_seed)
   
-  glove_model <- GloVe$new(word_vectors_size = 50, vocabulary = limited_vocab, x_max = 10)
-  # get the word vectors:
-  word_embeddings <- glove_model$fit_transform(tcm, n_iter = 10000, convergence_tol = 0.00001)
+  if(language=="es" | language=="br-pt"){
+    error("Currently this language is unsupported, this feature is only available for prompts and responses in English.")
+  }
+  if(language=="en"){
+    # w/ TCM matrix can factorize it via GloVe algorithm
+    # text2vec uses a parallel stochastic gradient descent algorithm
+    glove_model <- GloVe$new(word_vectors_size = 50, vocabulary = limited_vocab, x_max = 10)
+    # retrieve the word vectors
+    word_embeddings <- glove_model$fit_transform(tcm, n_iter = 10000, convergence_tol = 0.00001)
+  }
   
   # get average of main and context vectors as proposed in GloVe paper
   word_vectors <- word_embeddings + t(glove_model$components)  
+  
   # execute Relaxed Word Movers Distance
   rwmd_model <- RWMD$new(word_vectors, method = "cosine", normalize = T)
-  
-  rwmd_dist <- 1-dist2(dtm[1:length(unique(df[, prompts])), ], 
-        dtm[(length(unique(df[, prompts]))+1):dim(dtm)[1],], 
+  rwmd_dist <- 1-dist2(dtm[1:length(unique(dataframe[, prompts])), ], 
+        dtm[(length(unique(dataframe[, prompts]))+1):dim(dtm)[1],], 
+        # don't need to tell norm here since we normalized above
         method = rwmd_model, norm = 'none')
-  #browser()
   rwmd_dist <- ifelse(rwmd_dist<0, 0, rwmd_dist)
-  df$embedding_score <- NULL
-  for(obs in 1:dim(df)[1]){
-    #browser()
-    if(df[obs, prompts]==unique(df[, prompts])[1]){
-      df[obs, "embedding_score"] <- rwmd_dist[1, obs]
+  
+  # now, put those embedding scores back into original dataframe
+  dataframe$embedding_score <- NULL
+  for(obs in 1:dim(dataframe)[1]){
+    # based on which prompt they saw
+    # since we have comparisons of all prompts to all responses
+    if(dataframe[obs, prompts]==unique(dataframe[, prompts])[1]){
+      dataframe[obs, "embedding_score"] <- rwmd_dist[1, obs]
     } 
-    if(df[obs, prompts]==unique(df[, prompts])[2]){
-      df[obs, "embedding_score"] <- rwmd_dist[2, obs]
+    if(dataframe[obs, prompts]==unique(dataframe[, prompts])[2]){
+      dataframe[obs, "embedding_score"] <- rwmd_dist[2, obs]
     }
-    if(df[obs, prompts]==unique(df[, prompts])[3]){
-      df[obs, "embedding_score"] <- rwmd_dist[3, obs]
+    if(dataframe[obs, prompts]==unique(dataframe[, prompts])[3]){
+      dataframe[obs, "embedding_score"] <- rwmd_dist[3, obs]
     }
   }
   
-  return(df)
+  return(dataframe)
 }

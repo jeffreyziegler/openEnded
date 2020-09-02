@@ -13,6 +13,8 @@ averageSimilarity(dataframe, similarity_measures, k,
 \item{similarity_measures}{Vector(s) from dataframe that contains the similarity measures to be used as weights.}
 
 \item{k}{The penalty that you want to set for down-weighting inattentive respondents. Lower levels of k down-weight low attention participants more severely.}
+
+\item{up_down_weight}{Do you want to up-weight or down-weight?}
 }
 \value{
 Original dataframe with an additional vector that is the averaged weight of the similarity measures provided.

@@ -5,6 +5,7 @@
 #' @param dataframe Dataframe from which you will select the similarity measures to be used to calculate the weights.
 #' @param similarity_measures Vector(s) from dataframe that contains the similarity measures to be used as weights. 
 #' @param k The penalty that you want to set for down-weighting inattentive respondents. Lower levels of k down-weight low attention participants more severely. 
+#' @param up_down_weight Do you want to up-weight or down-weight?
 #' 
 #' @return Original dataframe with an additional vector that is the averaged weight of the similarity measures provided.
 #' 
