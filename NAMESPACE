@@ -3,6 +3,7 @@
 export(ATEcutoff)
 export(IVcomparison)
 export(averageSimilarity)
+export(compareK)
 export(complierATE)
 export(createWordEmbeddings)
 export(generateMarginalEffect)

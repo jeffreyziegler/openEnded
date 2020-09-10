@@ -7,10 +7,9 @@
 #' @param k The penalty that you want to set for down-weighting inattentive respondents. Lower levels of k down-weight low attention participants more severely. 
 #' @param up_down_weight Do you want to up-weight or down-weight? Default="down".
 
-#' @return 
+#' @return Object containing instrumental variable regression call, data, results, etc.
 #'
 #' @author Jeffrey Ziegler (<jeffrey.ziegler[at]emory.edu>)
-#' @examples
 
 #' @rdname predictAttention
 #' @export

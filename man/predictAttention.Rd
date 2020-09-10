@@ -19,7 +19,7 @@ predictAttention(dataframe = NULL, attention_formula = NULL,
 \item{attention_predictors}{Symbolic representation of the model to be estimated. This is written in "typical" R language (i.e. x1 + x2). Do not need to specify y or outcome variable, it's assigned internally.}
 }
 \value{
-
+Object containing instrumental variable regression call, data, results, etc.
 }
 \description{
 Estimate a linear regression in which attention is the outcome, and the user defines the characteristics used to predict attention.

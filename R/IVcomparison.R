@@ -10,14 +10,11 @@
 #' @param similarity_measures Vector(s) from dataframe that contains the similarity measures to be used as weights. 
 #' @param k The penalty that you want to set for down-weighting inattentive respondents. Lower levels of k down-weight low attention participants more severely. 
 #' @param up_down_weight Do you want to up-weight or down-weight?
-
 #' @param print_regs Return table of estimated regression coefficients and fit statistics formatted for LaTeX using texreg(). Default=FALSE.
-
-#' @return 
-
-#' @author Jeffrey Ziegler (<jeffrey.ziegler[at]emory.edu>)
 #' 
-#' @examples
+#' @return Object containing instrumental variable regression call, data, results, etc.
+#' 
+#' @author Jeffrey Ziegler (<jeffrey.ziegler[at]emory.edu>)
 #' 
 #'    
 #' @seealso \code{\link{complierATE}} \code{\link{regressionComparison}}

@@ -48,7 +48,7 @@ createWordEmbeddings <- function(dataframe, prompts, responses, user_seed=5, pru
   # set seed first for reproducibility
   set.seed(user_seed)
   
-  if(language=="es" | language=="br-pt"){
+  if(language!="en"){
     error("Currently this language is unsupported, this feature is only available for prompts and responses in English.")
   }
   if(language=="en"){

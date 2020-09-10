@@ -24,7 +24,7 @@ If you use this software, please cite the original paper (<a href="https://osf.i
 @article{ziegler2020,
   title={A Text-As-Data Approach For Using Open-Ended Responses As Manipulation Checks},
   author={Ziegler, Jeffrey},
-  journal={Working Paper},
+  journal={Conditionally Accepted at Political Analysis},
   year={2020},  
   url = {https://github.com/jeffreyziegler/openEnded}
 }

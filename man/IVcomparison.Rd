@@ -21,15 +21,14 @@ IVcomparison(dataframe = NULL, formula = NULL,
 
 \item{print_regs}{Return table of estimated regression coefficients and fit statistics formatted for LaTeX using texreg(). Default=FALSE.}
 }
+\value{
+Object containing instrumental variable regression call, data, results, etc.
+}
 \description{
 Estimate the LATE using an instrumental variable approach to compare with the simulated sampling distribution of participants that likely received and didn't receive the treatment.
 }
 \details{
 This function estimate an IV regression and generate a regression table of results with LaTeX formatting.
-}
-\examples{
-
-   
 }
 \seealso{
 \code{\link{complierATE}} \code{\link{regressionComparison}}
