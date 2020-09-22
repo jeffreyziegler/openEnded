@@ -53,7 +53,7 @@ complierATE <- function(dataframe=NULL,
                                                             plot_interact_x, 
                                                             stable_x))
     }
-  
+  if(k_plot!=T){
     p1 <- ggplot(bootstrappedData, aes(x=first_diffs, y=as.factor(treat_from_to), colour=subset, fill=subset)) +
     theme_pubr() +
     geom_vline(aes(xintercept=0), linetype="dashed", size=.5, colour="black") +
@@ -74,19 +74,28 @@ complierATE <- function(dataframe=NULL,
     geom_vline(xintercept = c(1.5,2.5)) +
     labs(x='\nMarginal Effect of Treatment\n', y='\nTreatment Condition\n', colour="Sample:", fill="Sample:"
     )
-  if(display_plot==T){
-    print(p1)
+    if(!is.null(plot_path)){
+      pdf(plot_path, width=11, height=7)
+      print(p1)
+      dev.off()
+    }
+    if(display_plot==T){
+      print(p1)
+    }
   }
-  if(!is.null(plot_path)){
-    pdf(plot_path, width=11, height=7)
-    print(p1)
-    dev.off()
-  }
-  
   if(k_plot==T){
-    hist(unique(bootstrappedData$cutoff), xlab="Cutoff Value", 
-               main="", cex.lab=1.5, cex.axis=1.5)
+      if(!is.null(plot_path)){
+        pdf(plot_path)
+        hist(unique(bootstrappedData$cutoff), xlab="Cutoff Value", 
+             main="", cex.lab=1.5, cex.axis=1.5)
+        dev.off()
+      }
+    if(display_plot==T){
+      hist(unique(bootstrappedData$cutoff), xlab="Cutoff Value", 
+           main="", cex.lab=1.5, cex.axis=1.5)
+    }
   }
+ 
  
   # turn warnings back on
   options(warn = defaultW)

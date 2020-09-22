@@ -5,8 +5,7 @@
 \title{Estimate Instrumental Variable Model for LATE}
 \usage{
 IVcomparison(dataframe = NULL, formula = NULL,
-  similarity_measures = NULL, k = 3, up_down_weight = "up",
-  print_regs = F)
+  similarity_measures = NULL, k = 3, up_down_weight = "up")
 }
 \arguments{
 \item{dataframe}{Dataframe from which you will select the outcome, predictors, and weights for the regression model.}
@@ -18,8 +17,6 @@ IVcomparison(dataframe = NULL, formula = NULL,
 \item{k}{The penalty that you want to set for down-weighting inattentive respondents. Lower levels of k down-weight low attention participants more severely.}
 
 \item{up_down_weight}{Do you want to up-weight or down-weight?}
-
-\item{print_regs}{Return table of estimated regression coefficients and fit statistics formatted for LaTeX using texreg(). Default=FALSE.}
 }
 \value{
 Object containing instrumental variable regression call, data, results, etc.

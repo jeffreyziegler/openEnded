@@ -10,7 +10,6 @@
 #' @param similarity_measures Vector(s) from dataframe that contains the similarity measures to be used as weights. 
 #' @param k The penalty that you want to set for down-weighting inattentive respondents. Lower levels of k down-weight low attention participants more severely. 
 #' @param up_down_weight Do you want to up-weight or down-weight?
-#' @param print_regs Return table of estimated regression coefficients and fit statistics formatted for LaTeX using texreg(). Default=FALSE.
 #' 
 #' @return Object containing instrumental variable regression call, data, results, etc.
 #' 
@@ -26,8 +25,7 @@ IVcomparison <- function(dataframe=NULL,
                          formula=NULL, 
                          similarity_measures=NULL,
                          k=3, 
-                         up_down_weight="up",
-                         print_regs=F){
+                         up_down_weight="up"){
   
   # check basics of function by user
   if(is.null(dataframe) | is.null(formula)){
@@ -53,12 +51,10 @@ IVcomparison <- function(dataframe=NULL,
   assign(paste("ivModel", sub('\\. *', '', formula)[2], sep="_"),
          iv_out, envir = .GlobalEnv)
   
-  # check if user wants to print regressions tables for latex
-  if(print_regs==T){
-    # print output of regressions 
-    print(texreg(list(iv_out),
+  # print output of regressions 
+  print(texreg(list(iv_out),
                  digits=3, stars = c(0.001, 0.01, 0.05)))
-  }
+  
   
 }
 

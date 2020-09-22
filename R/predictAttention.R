@@ -35,31 +35,22 @@ predictAttention <- function(dataframe=NULL,
     dataframe <- averageSimilarity(dataframe, similarity_measures=c("jaccardSimilarity", "cosineSimilarity"), k, up_down_weight)
   }
   dataframe <- averageSimilarity(dataframe, similarity_measures, k, up_down_weight)
-  
-  dataframe$zeroAnswer <- ifelse(dataframe$avgSimilarity==0, 1, 0)
-  #browser()
   if(model_type=="logit"){
     attention_glm <- glm(paste("avgSimilarity~", attention_formula), data=dataframe)
     correct_glm <- glm(paste(correct_vec, "~", attention_formula), data=dataframe)
-    zero_glm <- glm(paste("zeroAnswer~", attention_formula), data=dataframe)
   }
   # assign models to global environment
   # base models w/ all respondents
   assign(paste("attentionModel", sub('\\. *', '', attention_formula)[2], sep="_"),
          attention_glm, envir = .GlobalEnv)
-  # removing inattentive participants
+  # removing inattentive participants based on correctness
   assign(paste("correctnessModel", sub('\\. *', '', attention_formula)[2], sep="_"),
          correct_glm, envir = .GlobalEnv)
-  # re-weighting
-  assign(paste("zeroedParticipantsModel", sub('\\. *', '', attention_formula)[2], sep="_"),
-         zero_glm, envir = .GlobalEnv)
   
-  # check if user wants to print regressions tables for latex
-  #if(print_regs==T){
-    # print output of regressions 
-    print(texreg(list(attention_glm, correct_glm, zero_glm),
-                 custom.model.names = c("Attention", "Correct Response", "Zero Respondents Removed"),
+  # print output of regressions 
+  print(texreg(list(attention_glm, correct_glm),
+                 custom.model.names = c("Attention", "Correct Response"),
                  digits=3, stars = c(0.001, 0.01, 0.05)))
-  #}
+  
   
 }
