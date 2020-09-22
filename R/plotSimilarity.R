@@ -18,6 +18,7 @@
 plotSimilarity <- function(dataframe, measure, plot_path=NULL){
   p1 <- ggplot(dataframe, aes(x = dataframe[, measure])) +  
     geom_histogram(binwidth=.025, colour="black", fill="white") + 
+    lims(x=c(0, 1))+
     labs(x=paste( "\n", str_to_title(gsub('([[:upper:]])', ' \\1', measure)), sep=""), y="Number of Respondents")+ theme_classic() +
     geom_vline(aes(xintercept=mean(dataframe[, measure], na.rm=T)),
                color="black", linetype="dashed", size=1.5) +

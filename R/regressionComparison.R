@@ -90,7 +90,7 @@ regressionComparison <- function(dataframe=NULL,
       listwise_model <- lm(formula, data=dataframe[dataframe[[correct_vec]]==1,])
     }
     else{
-      listwise_model <- lm(formula, data=dataframe[dataframe$avgSimilarity>.1,])
+      listwise_model <- lm(formula, data=dataframe[dataframe$avgSimilarity>.05,])
     }
   }
   # currently, only support logit aside from OLS
@@ -107,7 +107,7 @@ regressionComparison <- function(dataframe=NULL,
       listwise_model <- glm(formula, family=binomial(link = "logit"), data=dataframe[dataframe[[correct_vec]]==1,])
     } 
     else{
-      listwise_model <- glm(formula, family=binomial(link = "logit"), data=dataframe[dataframe$avgSimilarity>.1,])
+      listwise_model <- glm(formula, family=binomial(link = "logit"), data=dataframe[dataframe$avgSimilarity>.05,])
     }
   }
   # assign models to global environment
@@ -134,9 +134,17 @@ regressionComparison <- function(dataframe=NULL,
   firstDiffPlotData <- list()
   temp_models <- list(base_model, listwise_model, weighted_model)
   for(sample in 1:length(temp_models)){
+    browser()
       # create model matrix of dummies from specified formula
-      full_dummies <- model.matrix(model.frame(formula, data=temp_models[[sample]]$data),
+      if(model_type=="ols"){
+        full_dummies <- model.matrix(model.frame(formula, data=temp_models[[sample]]$model),
+                                   data=temp_models[[sample]]$model)
+      }
+    
+      if(model_type=="logit"){
+        full_dummies <- model.matrix(model.frame(formula, data=temp_models[[sample]]$data),
                                    data=temp_models[[sample]]$data)
+      }
       # get unique combos for sims of marginal effects
       unique_dummies <- unique(full_dummies)
       # point estimates from regression
@@ -146,7 +154,12 @@ regressionComparison <- function(dataframe=NULL,
       # simulate parameter distributions
       set.seed(user_seed)
       sim_betas <- as.matrix(mvrnorm(n_sims, point_estimates, var_cov_mat))
-      fd_labs <- unique(model.frame(formula, data=temp_models[[sample]]$data)[-1]) %>% unite("combo", sep=":", na.rm = T, remove = F)
+      if(model_type=="ols"){
+        fd_labs <- unique(model.frame(formula, data=temp_models[[sample]]$model)[-1]) %>% unite("combo", sep=":", na.rm = T, remove = F)
+      }
+      if(model_type=="logit"){
+        fd_labs <- unique(model.frame(formula, data=temp_models[[sample]]$data)[-1]) %>% unite("combo", sep=":", na.rm = T, remove = F)
+      }
       # plot simulated first diffs
       firstDiffPlotData[[sample]] <- generateMarginalEffect(unique_covars = unique_dummies, 
                          simulated_betas=sim_betas, 
