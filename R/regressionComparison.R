@@ -22,6 +22,7 @@
 #' @param print_regs Return table of estimated regression coefficients and fit statistics formatted for LaTeX using texreg(). Default=FALSE.
 #' @param plot_path If user wants to save figure, please provide a character vector for the file path in which the plot should be download. User must decide extension (pdf, jpg, png) in file path. 
 #' @param stable_x Indicates whether plot_interact_x is continuous (stable_x=FALSE) or a factor (stable_x=TRUE). Currently the package only supports TRUE.
+#' @param return_data Do you want the data that's used to construct the plot? Default = FALSE.
 
 #' @return Three regression objects are estimated and loaded to your global environment as separate Zelig objects. They are named baseModel_"outcome variable", listwiseModel_"outcome variable", and weightedModel_"outcome variable".
 
@@ -62,7 +63,8 @@ regressionComparison <- function(dataframe=NULL,
                                  display_plot=F,
                                  stable_x=T,
                                  plot_path=NULL, 
-                                 print_regs=F){
+                                 print_regs=F,
+                                 return_data=F){
   # dplyr and tidy throw warning 
   # so we'll depress them for now and then turn them back on
   defaultW <- getOption("warn") 
@@ -134,7 +136,7 @@ regressionComparison <- function(dataframe=NULL,
   firstDiffPlotData <- list()
   temp_models <- list(base_model, listwise_model, weighted_model)
   for(sample in 1:length(temp_models)){
-    browser()
+    #browser()
       # create model matrix of dummies from specified formula
       if(model_type=="ols"){
         full_dummies <- model.matrix(model.frame(formula, data=temp_models[[sample]]$model),
@@ -163,16 +165,26 @@ regressionComparison <- function(dataframe=NULL,
       # plot simulated first diffs
       firstDiffPlotData[[sample]] <- generateMarginalEffect(unique_covars = unique_dummies, 
                          simulated_betas=sim_betas, 
-                         diff_labs=fd_labs[,1])
-      #grep(paste(toMatch,collapse="|"), 
-      #     myfile$Letter, value=TRUE)
-      firstDiffPlotData[[sample]]$treat_from <- sapply(str_match_all(firstDiffPlotData[[sample]]$covar_cats, 
+                         diff_labs=fd_labs[,1], model_type=model_type)
+     
+      if(model_type=="ols"){
+        
+        firstDiffPlotData[[sample]]$treat_from <- sapply(str_match_all(firstDiffPlotData[[sample]]$covar_cats, 
+                                                                       paste(unique(temp_models[[sample]]$model[, plot_treatment]),
+                                                                             collapse = "|")), "[", 1)
+        firstDiffPlotData[[sample]]$treat_to <- sapply(str_match_all(firstDiffPlotData[[sample]]$covar_cats, 
+                                                                     paste(unique(temp_models[[sample]]$model[, plot_treatment]),
+                                                                           collapse = "|")), "[", 2)
+      }
+      if(model_type=="logit"){
+      
+        firstDiffPlotData[[sample]]$treat_from <- sapply(str_match_all(firstDiffPlotData[[sample]]$covar_cats, 
                            paste(unique(temp_models[[sample]]$data[, plot_treatment]),
                                  collapse = "|")), "[", 1)
-      firstDiffPlotData[[sample]]$treat_to <- sapply(str_match_all(firstDiffPlotData[[sample]]$covar_cats, 
+        firstDiffPlotData[[sample]]$treat_to <- sapply(str_match_all(firstDiffPlotData[[sample]]$covar_cats, 
                            paste(unique(temp_models[[sample]]$data[, plot_treatment]),
                                  collapse = "|")), "[", 2)
-      
+      }
       firstDiffPlotData[[sample]]$treat_from_to <- as.factor(paste(firstDiffPlotData[[sample]]$treat_from,
                                                          firstDiffPlotData[[sample]]$treat_to,
                                                           sep=" to "))
@@ -264,7 +276,9 @@ regressionComparison <- function(dataframe=NULL,
       dev.off()
       #error("Need to provide a path to save the plot")
   }
-  
+  if(return_data==TRUE){
+    return(firstDiffPlotData)
+  }
   # turn warnings back on
   options(warn = defaultW)
 }

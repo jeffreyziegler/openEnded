@@ -6,6 +6,8 @@
 #' @param unique_covars Model matrix of unique characteristics used to generate treatment effects.
 #' @param simulated_betas −XBetas that have been simulated from mvrnorm distribution
 #' @param diff_labs 
+#' @param model_type Statistical model to estimate. Currently support OLS and logistic ("ls", "logit").
+
 #' 
 #' @return Dataframe of marginal effects with corresponding 95% confidence intervals.
 #'
@@ -19,7 +21,7 @@
 #' @rdname generateMarginalEffect
 #' @export
 
-generateMarginalEffect <- function(unique_covars, simulated_betas, diff_labs){
+generateMarginalEffect <- function(unique_covars, simulated_betas, diff_labs, model_type){
   # go over all the possible combos of treatments
   predicted_probs <- matrix(ncol=dim(simulated_betas)[2], nrow=dim(simulated_betas)[1])
   for(covar_level in 1:dim(unique_covars)[1]){
@@ -43,18 +45,34 @@ generateMarginalEffect <- function(unique_covars, simulated_betas, diff_labs){
   level_combos <- as.data.frame(t(combn(diff_labs, 2, simplify=T)))
   combo_labs <- level_combos %>% unite("combo", V1:V2, na.rm = T, remove = F, sep="_")
   combo_labs <- combo_labs[,"combo"]
+  #browser()
+  if(model_type=="ols"){
+    sim_diffs <- data.frame(t(
+      matrix(
+        unlist(
+          comboGeneral(ncol(predicted_probs), 2, repetition = F, FUN = function(y){
+            predicted_probs[,y[2]] - predicted_probs[,y[1]]
+          }
+          )
+        ), 
+        nrow=choose(ncol(predicted_probs), 2),
+        byrow=T)
+    ))
+  }
+  if(model_type=="logit"){
+    sim_diffs <- data.frame(t(
+      matrix(
+        unlist(
+          comboGeneral(ncol(predicted_probs), 2, repetition = F, FUN = function(y){
+            (1/(1+exp(-predicted_probs[,y[2]]))) - (1/(1+exp(-predicted_probs[,y[1]])))
+          }
+          )
+        ), 
+        nrow=choose(ncol(predicted_probs), 2),
+        byrow=T)
+    ))
+  }
   
-  sim_diffs <- data.frame(t(
-    matrix(
-      unlist(
-        comboGeneral(ncol(predicted_probs), 2, repetition = F, FUN = function(y){
-          (1/(1+exp(-predicted_probs[,y[2]]))) - (1/(1+exp(-predicted_probs[,y[1]])))
-        }
-        )
-      ), 
-      nrow=choose(9, 2),
-      byrow=T)
-  ))
   names(sim_diffs) <- combo_labs
   
   # create df fill with point estimates, lower and upper bounds

@@ -9,7 +9,7 @@ regressionComparison(dataframe = NULL, formula = NULL,
   similarity_measures = NULL, k = 3, model_type = NULL,
   up_down_weight = "down", user_seed = 5, n_sims = 10000,
   correct_vec = NULL, display_plot = F, stable_x = T,
-  plot_path = NULL, print_regs = F)
+  plot_path = NULL, print_regs = F, return_data = F)
 }
 \arguments{
 \item{dataframe}{Dataframe from which you will select the outcome, predictors, and weights for the regression model.}
@@ -39,6 +39,8 @@ regressionComparison(dataframe = NULL, formula = NULL,
 \item{plot_path}{If user wants to save figure, please provide a character vector for the file path in which the plot should be download. User must decide extension (pdf, jpg, png) in file path.}
 
 \item{print_regs}{Return table of estimated regression coefficients and fit statistics formatted for LaTeX using texreg(). Default=FALSE.}
+
+\item{return_data}{Do you want the data that's used to construct the plot? Default = FALSE.}
 }
 \value{
 Three regression objects are estimated and loaded to your global environment as separate Zelig objects. They are named baseModel_"outcome variable", listwiseModel_"outcome variable", and weightedModel_"outcome variable".

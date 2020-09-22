@@ -16,6 +16,10 @@
 #' @export
 
 plotSimilarity <- function(dataframe, measure, plot_path=NULL){
+  # seting lims on x=[0,1] gives warnings
+  # so we'll depress them for now and then turn them back on
+  defaultW <- getOption("warn") 
+  options(warn = -1) 
   p1 <- ggplot(dataframe, aes(x = dataframe[, measure])) +  
     geom_histogram(binwidth=.025, colour="black", fill="white") + 
     lims(x=c(0, 1))+
@@ -31,5 +35,6 @@ plotSimilarity <- function(dataframe, measure, plot_path=NULL){
     dev.off()
   }
   return(p1)
-  
+  # turn warnings back on
+  options(warn = defaultW)
 }

@@ -4,7 +4,8 @@
 \alias{generateMarginalEffect}
 \title{Generate Marginal Effects}
 \usage{
-generateMarginalEffect(unique_covars, simulated_betas, diff_labs)
+generateMarginalEffect(unique_covars, simulated_betas, diff_labs,
+  model_type)
 }
 \arguments{
 \item{unique_covars}{Model matrix of unique characteristics used to generate treatment effects.}
@@ -12,6 +13,8 @@ generateMarginalEffect(unique_covars, simulated_betas, diff_labs)
 \item{simulated_betas}{−XBetas that have been simulated from mvrnorm distribution}
 
 \item{diff_labs}{}
+
+\item{model_type}{Statistical model to estimate. Currently support OLS and logistic ("ls", "logit").}
 }
 \value{
 Dataframe of marginal effects with corresponding 95% confidence intervals.
