@@ -4,7 +4,7 @@
 \alias{ATEcutoff}
 \title{Create ATE Cutoff}
 \usage{
-ATEcutoff(dataframe, formula, similarity_measures, model_type, k, bounds,
+ATEcutoff(dataframe, formula, similarity_measures, type_model, k, bounds,
   user_seed, plot_treatment = NULL, plot_interact_x = NULL, stable_x)
 }
 \arguments{
@@ -14,7 +14,7 @@ ATEcutoff(dataframe, formula, similarity_measures, model_type, k, bounds,
 
 \item{similarity_measures}{Vector(s) from dataframe that contains the similarity measures to be used as weights. Possible values for measure_type = c("osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex"). Default is "jaccard".}
 
-\item{model_type}{Statistical model to estimate. Currently support OLS and logistic ("ls", "logit").}
+\item{type_model}{Statistical model to estimate. Currently support OLS and logistic ("ls", "logit").}
 
 \item{k}{The penalty that you want to set for down-weighting inattentive respondents. Lower levels of k down-weight low attention participants more severely.}
 

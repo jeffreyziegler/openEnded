@@ -8,7 +8,7 @@ complierATE(dataframe = NULL, formula = NULL, plot_treatment = NULL,
   plot_interact_x = NULL, similarity_measures = c("jaccardDist",
   "cosineDist"), bounds = c(0.1, 0.2), n = 100, user_seed = 5,
   model_type = NULL, k = 3, display_plot = T, plot_path = NULL,
-  stable_x, k_plot = F)
+  stable_x, k_plot = F, return_data = F)
 }
 \arguments{
 \item{dataframe}{Dataframe from which we will estimate our regression model.}
@@ -26,6 +26,8 @@ complierATE(dataframe = NULL, formula = NULL, plot_treatment = NULL,
 \item{k}{The penalty that you want to set for down-weighting inattentive respondents. Lower levels of k down-weight low attention participants more severely.}
 
 \item{k_plot}{Do you want to see a histogram of the cutoffs used in the simulations?}
+
+\item{return_data}{Do you want the data that's used to construct the plot? Default = FALSE.}
 }
 \value{
 Plot of the marginal effects for "compliers" and "non-compliers".

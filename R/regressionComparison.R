@@ -136,7 +136,6 @@ regressionComparison <- function(dataframe=NULL,
   firstDiffPlotData <- list()
   temp_models <- list(base_model, listwise_model, weighted_model)
   for(sample in 1:length(temp_models)){
-    #browser()
       # create model matrix of dummies from specified formula
       if(model_type=="ols"){
         full_dummies <- model.matrix(model.frame(formula, data=temp_models[[sample]]$model),

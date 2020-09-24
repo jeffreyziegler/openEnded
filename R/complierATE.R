@@ -10,7 +10,8 @@
 #' @param bounds Minimum and maximum of uniform distribution we should draw cutoff values between.
 #' @param k_plot Do you want to see a histogram of the cutoffs used in the simulations?
 #' @param n Number of simulation rounds/iterations.
-#' 
+#' @param return_data Do you want the data that's used to construct the plot? Default = FALSE.
+
 #' @return Plot of the marginal effects for "compliers" and "non-compliers".
 #'
 #' @author Jeffrey Ziegler (<jeffrey.ziegler[at]emory.edu>)
@@ -32,7 +33,8 @@ complierATE <- function(dataframe=NULL,
                         display_plot=T,
                         plot_path=NULL,
                         stable_x, 
-                        k_plot=F){
+                        k_plot=F,
+                        return_data=F){
   
   # the vertical lines throw warnings from ggplot that are not concerning
   # so we'll depress them for now and then turn them back on
@@ -45,7 +47,7 @@ complierATE <- function(dataframe=NULL,
       bootstrappedData <- rbind(bootstrappedData, ATEcutoff(dataframe, 
                                                             formula,
                                                             similarity_measures, 
-                                                            model_type,
+                                                            type_model=model_type,
                                                             k, 
                                                             bounds,
                                                             user_seed,
@@ -95,8 +97,9 @@ complierATE <- function(dataframe=NULL,
            main="", cex.lab=1.5, cex.axis=1.5)
     }
   }
- 
- 
+  if(return_data==T){
+    return(bootstrappedData)
+  }
   # turn warnings back on
   options(warn = defaultW)
 }
