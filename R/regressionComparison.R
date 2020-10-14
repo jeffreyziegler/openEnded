@@ -23,6 +23,7 @@
 #' @param plot_path If user wants to save figure, please provide a character vector for the file path in which the plot should be download. User must decide extension (pdf, jpg, png) in file path. 
 #' @param stable_x Indicates whether plot_interact_x is continuous (stable_x=FALSE) or a factor (stable_x=TRUE). Currently the package only supports TRUE.
 #' @param return_data Do you want the data that's used to construct the plot? Default = FALSE.
+#' @param plotDifferences Do you want to see the marginal effects by model, or the differences between the models with regard to their marginal effects? Default=FALSE.
 
 #' @return Three regression objects are estimated and loaded to your global environment as separate Zelig objects. They are named baseModel_"outcome variable", listwiseModel_"outcome variable", and weightedModel_"outcome variable".
 
@@ -64,7 +65,8 @@ regressionComparison <- function(dataframe=NULL,
                                  stable_x=T,
                                  plot_path=NULL, 
                                  print_regs=F,
-                                 return_data=F){
+                                 return_data=F,
+                                 plotDifferences=F){
   # dplyr and tidy throw warning 
   # so we'll depress them for now and then turn them back on
   defaultW <- getOption("warn") 
@@ -162,106 +164,210 @@ regressionComparison <- function(dataframe=NULL,
         fd_labs <- unique(model.frame(formula, data=temp_models[[sample]]$data)[-1]) %>% unite("combo", sep=":", na.rm = T, remove = F)
       }
       # plot simulated first diffs
-      firstDiffPlotData[[sample]] <- generateMarginalEffect(unique_covars = unique_dummies, 
-                         simulated_betas=sim_betas, 
-                         diff_labs=fd_labs[,1], model_type=model_type)
-     
-      if(model_type=="ols"){
+      if(plotDifferences!=T){
+        firstDiffPlotData[[sample]] <- generateMarginalEffect(unique_covars = unique_dummies, 
+                                                              simulated_betas=sim_betas, 
+                                                              diff_labs=fd_labs[,1], 
+                                                              model_type=model_type, 
+                                                              plotDifferences=F)
         
-        firstDiffPlotData[[sample]]$treat_from <- sapply(str_match_all(firstDiffPlotData[[sample]]$covar_cats, 
+        if(model_type=="ols"){
+          
+          firstDiffPlotData[[sample]]$treat_from <- sapply(str_match_all(firstDiffPlotData[[sample]]$covar_cats, 
+                                                                         paste(unique(temp_models[[sample]]$model[, plot_treatment]),
+                                                                               collapse = "|")), "[", 1)
+          firstDiffPlotData[[sample]]$treat_to <- sapply(str_match_all(firstDiffPlotData[[sample]]$covar_cats, 
                                                                        paste(unique(temp_models[[sample]]$model[, plot_treatment]),
-                                                                             collapse = "|")), "[", 1)
-        firstDiffPlotData[[sample]]$treat_to <- sapply(str_match_all(firstDiffPlotData[[sample]]$covar_cats, 
-                                                                     paste(unique(temp_models[[sample]]$model[, plot_treatment]),
-                                                                           collapse = "|")), "[", 2)
-      }
-      if(model_type=="logit"){
-      
-        firstDiffPlotData[[sample]]$treat_from <- sapply(str_match_all(firstDiffPlotData[[sample]]$covar_cats, 
-                           paste(unique(temp_models[[sample]]$data[, plot_treatment]),
-                                 collapse = "|")), "[", 1)
-        firstDiffPlotData[[sample]]$treat_to <- sapply(str_match_all(firstDiffPlotData[[sample]]$covar_cats, 
-                           paste(unique(temp_models[[sample]]$data[, plot_treatment]),
-                                 collapse = "|")), "[", 2)
-      }
-      firstDiffPlotData[[sample]]$treat_from_to <- as.factor(paste(firstDiffPlotData[[sample]]$treat_from,
-                                                         firstDiffPlotData[[sample]]$treat_to,
-                                                          sep=" to "))
-      
-      firstDiffPlotData[[sample]]$interact_x_from <- sapply(str_match_all(firstDiffPlotData[[sample]]$covar_cats, 
-                                                                   paste(temp_models[[sample]]$xlevels[[plot_interact_x]],
-                                                                   collapse = "|")), "[", 1) 
-      firstDiffPlotData[[sample]]$interact_x_to <- sapply(str_match_all(firstDiffPlotData[[sample]]$covar_cats, 
+                                                                             collapse = "|")), "[", 2)
+        }
+        if(model_type=="logit"){
+          
+          firstDiffPlotData[[sample]]$treat_from <- sapply(str_match_all(firstDiffPlotData[[sample]]$covar_cats, 
+                                                                         paste(unique(temp_models[[sample]]$data[, plot_treatment]),
+                                                                               collapse = "|")), "[", 1)
+          firstDiffPlotData[[sample]]$treat_to <- sapply(str_match_all(firstDiffPlotData[[sample]]$covar_cats, 
+                                                                       paste(unique(temp_models[[sample]]$data[, plot_treatment]),
+                                                                             collapse = "|")), "[", 2)
+        }
+        firstDiffPlotData[[sample]]$treat_from_to <- as.factor(paste(firstDiffPlotData[[sample]]$treat_from,
+                                                                     firstDiffPlotData[[sample]]$treat_to,
+                                                                     sep=" to "))
+        
+        firstDiffPlotData[[sample]]$interact_x_from <- sapply(str_match_all(firstDiffPlotData[[sample]]$covar_cats, 
+                                                                            paste(temp_models[[sample]]$xlevels[[plot_interact_x]],
+                                                                                  collapse = "|")), "[", 1) 
+        firstDiffPlotData[[sample]]$interact_x_to <- sapply(str_match_all(firstDiffPlotData[[sample]]$covar_cats, 
                                                                           paste(temp_models[[sample]]$xlevels[[plot_interact_x]],
                                                                                 collapse = "|")), "[", 2) 
-      if(stable_x==T){
-        firstDiffPlotData[[sample]] <- firstDiffPlotData[[sample]][which(firstDiffPlotData[[sample]]$interact_x_from==firstDiffPlotData[[sample]]$interact_x_to),]
-        firstDiffPlotData[[sample]]$interact_x <- as.factor(firstDiffPlotData[[sample]]$interact_x_from)
-        firstDiffPlotData[[sample]] <- firstDiffPlotData[[sample]][, c("first_diffs","lower_CI", "upper_CI", "treat_from_to", "interact_x")]
+        if(stable_x==T){
+          firstDiffPlotData[[sample]] <- firstDiffPlotData[[sample]][which(firstDiffPlotData[[sample]]$interact_x_from==firstDiffPlotData[[sample]]$interact_x_to),]
+          firstDiffPlotData[[sample]]$interact_x <- as.factor(firstDiffPlotData[[sample]]$interact_x_from)
+          firstDiffPlotData[[sample]] <- firstDiffPlotData[[sample]][, c("first_diffs","lower_CI", "upper_CI", "treat_from_to", "interact_x")]
+        }
       }
-
+      if(plotDifferences==T){
+        firstDiffPlotData[[sample]] <- generateMarginalEffect(unique_covars = unique_dummies, 
+                                                              simulated_betas=sim_betas, 
+                                                              diff_labs=fd_labs[,1], 
+                                                              model_type=model_type, 
+                                                              plotDifferences=T)
+      }
+      firstDiffPlotData[[sample]] <- firstDiffPlotData[[sample]][, sort(names(firstDiffPlotData[[sample]]))]
   }
 
-  firstDiffPlotData <- bind_rows(firstDiffPlotData, .id = "column_label")
- 
-  firstDiffPlotData$column_label <- revalue(factor(firstDiffPlotData$column_label),
-                                            c("1"="Full", 
-                                              "2"="List-Wise Deletion", 
-                                              "3"="Weighted"))
-  normal_data <- firstDiffPlotData %>% group_by(treat_from_to, column_label) %>% summarise(n = n(), .groups = 'drop') %>% filter(n>1)
-  weird_data <- firstDiffPlotData %>% group_by(treat_from_to, column_label) %>% summarise(n = n(), .groups = 'drop') %>% filter(n==1)
-  for(scenario in 1:dim(firstDiffPlotData)[1]){
-    # might need to do one for when k=1 and k=10
-    # or when user_seed=1, 10, or 100, for some reason
-    # the plots create an extra group
-   # browser()
-    
-    if(do.call(paste0, firstDiffPlotData[scenario, c("treat_from_to", "column_label")])%in% do.call(paste0, weird_data[, c("treat_from_to", "column_label")])){
-      firstDiffPlotData[scenario, "first_diffs"] <- -1*firstDiffPlotData[scenario, "first_diffs"]
-      firstDiffPlotData[scenario, "lower_CI"] <- -1*firstDiffPlotData[scenario, "lower_CI"] 
-      firstDiffPlotData[scenario, "upper_CI"] <- -1*firstDiffPlotData[scenario, "upper_CI"]
-      firstDiffPlotData[scenario, "treat_from_to"] <- paste(rev(strsplit(as.character(firstDiffPlotData[scenario, "treat_from_to"]), "\\s+")[[1]]), collapse= " ")
+  if(plotDifferences==T){
+    browser()
+    difference_bw_models <- NULL
+    for(j in 1:(dim(firstDiffPlotData[[1]])[2])){
+      difference_bw_models <- as.data.frame(rbind(difference_bw_models, cbind(as.data.frame(firstDiffPlotData[[1]])[, j]-as.data.frame(firstDiffPlotData[[2]])[, j], 
+                                                                              as.data.frame(firstDiffPlotData[[1]])[, j]-as.data.frame(firstDiffPlotData[[3]])[, j],
+                                                                              as.data.frame(firstDiffPlotData[[2]])[, j]-as.data.frame(firstDiffPlotData[[3]])[, j],
+                                                                              j)))
+      
     }
+    difference_bw_models$j <- as.factor(difference_bw_models$j)
+    levels(difference_bw_models$j) <- names(firstDiffPlotData[[1]])
+    names(difference_bw_models) <- c("Full - Weighted", "Full - Listwise Deletion",
+                                     "Weighted - Listwise Deletion", "treatment_effect")
     
-    if(str_detect(firstDiffPlotData[scenario, c("treat_from_to")], "Control") & str_locate(firstDiffPlotData[scenario, c("treat_from_to")], "Control")[1]!=1){
-      firstDiffPlotData[scenario, "first_diffs"] <- -1*firstDiffPlotData[scenario, "first_diffs"]
-      firstDiffPlotData[scenario, "lower_CI"] <- -1*firstDiffPlotData[scenario, "lower_CI"] 
-      firstDiffPlotData[scenario, "upper_CI"] <- -1*firstDiffPlotData[scenario, "upper_CI"]
-      firstDiffPlotData[scenario, "treat_from_to"] <- paste(rev(strsplit(as.character(firstDiffPlotData[scenario, "treat_from_to"]), "\\s+")[[1]]), collapse= " ")
+    difference_bw_models$treat_from <- sapply(str_match_all(difference_bw_models$treatment_effect, 
+                         paste(unique(temp_models[[sample]]$model[, plot_treatment]),
+                               collapse = "|")), "[", 1)
+    difference_bw_models$treat_to <- sapply(str_match_all(difference_bw_models$treatment_effect, 
+                                      paste(unique(temp_models[[sample]]$model[, plot_treatment]),
+                                            collapse = "|")), "[", 2)
+    difference_bw_models$treat_from_to <- as.factor(paste(difference_bw_models$treat_from,
+                                                                  difference_bw_models$treat_to,
+                                                                 sep=" to "))
+    
+    difference_bw_models$interact_x_from <- sapply(str_match_all(difference_bw_models$treatment_effect, 
+                                                                        paste(temp_models[[sample]]$xlevels[[plot_interact_x]],
+                                                                              collapse = "|")), "[", 1) 
+    difference_bw_models$interact_x_to <- sapply(str_match_all(difference_bw_models$treatment_effect, 
+                                                                      paste(temp_models[[sample]]$xlevels[[plot_interact_x]],
+                                                                            collapse = "|")), "[", 2) 
+    
+
+    
+    difference_bw_models <- difference_bw_models[which(difference_bw_models$interact_x_from==difference_bw_models$interact_x_to),]
+    difference_bw_models$interact_x <- as.factor(difference_bw_models$interact_x_from)
+    
+    #browser()
+    
+    difference_bw_modelsMelt <- melt(difference_bw_models, id = c("treat_from_to", "interact_x"),
+                                     measure.vars = c("Full - Weighted", "Full - Listwise Deletion", "Weighted - Listwise Deletion"))
+
+    difference_bw_modelsPlotData <- cbind(ddply(difference_bw_modelsMelt, .(treat_from_to, interact_x, variable), summarize, first_diffs = mean(value)),
+                                          lower_CI = ddply(difference_bw_modelsMelt, .(treat_from_to, interact_x, variable), summarize, lower_CI = quantile(value, .025))[,4],
+                                          upper_CI = ddply(difference_bw_modelsMelt, .(treat_from_to, interact_x,  variable), summarize, upper_CI = quantile(value, .975))[,4]
+    )
+    normal_data <- difference_bw_modelsPlotData %>% group_by(treat_from_to, variable) %>% summarise(n = n(), .groups = 'drop') %>% filter(n>1)
+    weird_data <- difference_bw_modelsPlotData %>% group_by(treat_from_to, variable) %>% summarise(n = n(), .groups = 'drop') %>% filter(n==1)
+    for(scenario in 1:dim(difference_bw_modelsPlotData)[1]){
+      
+      if(do.call(paste0, difference_bw_modelsPlotData[scenario, c("treat_from_to", "variable")])%in% do.call(paste0, weird_data[, c("treat_from_to", "variable")])){
+        difference_bw_modelsPlotData[scenario, "first_diffs"] <- -1*difference_bw_modelsPlotData[scenario, "first_diffs"]
+        difference_bw_modelsPlotData[scenario, "lower_CI"] <- -1*difference_bw_modelsPlotData[scenario, "lower_CI"] 
+        difference_bw_modelsPlotData[scenario, "upper_CI"] <- -1*difference_bw_modelsPlotData[scenario, "upper_CI"]
+        difference_bw_modelsPlotData[scenario, "treat_from_to"] <- paste(rev(strsplit(as.character(difference_bw_modelsPlotData[scenario, "treat_from_to"]), "\\s+")[[1]]), collapse= " ")
+      }
+      
+      if(str_detect(difference_bw_modelsPlotData[scenario, c("treat_from_to")], 
+                    levels(temp_models[[sample]]$model[, plot_treatment])[1]) & str_locate(difference_bw_modelsPlotData[scenario, c("treat_from_to")], 
+                                                                                           levels(temp_models[[sample]]$model[, plot_treatment])[1])[1]!=1){
+        difference_bw_modelsPlotData[scenario, "first_diffs"] <- -1*difference_bw_modelsPlotData[scenario, "first_diffs"]
+        difference_bw_modelsPlotData[scenario, "lower_CI"] <- -1*difference_bw_modelsPlotData[scenario, "lower_CI"] 
+        difference_bw_modelsPlotData[scenario, "upper_CI"] <- -1*difference_bw_modelsPlotData[scenario, "upper_CI"]
+        difference_bw_modelsPlotData[scenario, "treat_from_to"] <- paste(rev(strsplit(as.character(difference_bw_modelsPlotData[scenario, "treat_from_to"]), "\\s+")[[1]]), collapse= " ")
+      }
     }
-    
-    # if(str_detect(firstDiffPlotData[scenario, c("treat_from_to")], "Appease to Alienate")){
-    #   firstDiffPlotData[scenario, "first_diffs"] <- -1*firstDiffPlotData[scenario, "first_diffs"]
-    #   firstDiffPlotData[scenario, "lower_CI"] <- -1*firstDiffPlotData[scenario, "lower_CI"]
-    #   firstDiffPlotData[scenario, "upper_CI"] <- -1*firstDiffPlotData[scenario, "upper_CI"]
-    #   firstDiffPlotData[scenario, "treat_from_to"] <- paste(rev(strsplit(as.character(firstDiffPlotData[scenario, "treat_from_to"]), "\\s+")[[1]]), collapse= " ")
-    # }
+
+    #pdf("figures/difference_bw_models(Kane).pdf", width=15, height=8)
+    #browser()
+    compareRegPlot <- ggplot(difference_bw_modelsPlotData) +
+      #theme_classic() +# coord_flip()+
+      theme_pubr() +
+      # geom_pointrange(aes(x=variable, y = FDmean, ymin = FDlow90, ymax = FDhigh90, colour=subset),
+      #                position = position_dodge(width =.75), size=1.5)+
+      geom_pointrange(aes(x=treat_from_to, y = first_diffs, ymin = lower_CI, ymax = upper_CI, colour=variable, shape=variable),
+                      position = position_dodge(width =.75), size=1.5)+
+      scale_shape_manual(values = c(17,18,19, 16))+
+      geom_hline(aes(yintercept= 0), linetype="dashed", size=.5, colour="black") +
+      scale_colour_grey(start = 0, end = 0.7)+
+      facet_wrap(~interact_x, ncol=3) + 
+      theme(axis.title=element_text(size=20), axis.text = element_text(size=18), legend.text=element_text(size=18),
+            strip.text = element_text(size=20), strip.background = element_rect(fill = NA, color = "black"),
+            legend.position="bottom", legend.title = element_text(size=20),
+            title = element_text(size=25),  legend.background = element_blank(),
+            legend.box.background = element_rect(colour = "black"), axis.text.x = element_text(angle = 45, hjust = 1),
+            panel.border = element_blank(),
+            panel.background = element_rect(fill = NA, color = "black"),
+            panel.grid = element_blank()
+            #  strip.background = element_blank(),
+            # strip.text.x = element_blank()
+      ) +
+      geom_vline(xintercept = c(1.5,2.5)) +
+      labs(y='\nDifference Between Treatment Effects\n', x='\nTreatment Condition\n', colour="Sample\n(Model):", shape="Sample\n(Model):")
+
   }
   
-  # generate and temporarily save plot of treatment effects
-  # by interact_x for base, weighted, and list-wise models
-  compareRegPlot <- ggplot(firstDiffPlotData, aes(x=treat_from_to, y = first_diffs )) +
-    theme_pubr() +
-    geom_pointrange(aes(ymin = lower_CI, ymax = upper_CI, 
-                        colour=column_label, shape=column_label
-    ),
-    position = position_dodge(width =.75), size=1.5)+
-    scale_shape_manual(values = c(17,18,19, 16))+
-    geom_hline(aes(yintercept= 0), linetype="dashed", size=.5, colour="black") +
-    facet_wrap(~interact_x, ncol=3, scales = "fixed", drop = T) + 
-    scale_colour_grey(start = 0, end = 0.7)+
-    theme(axis.title=element_text(size=20), axis.text = element_text(size=18), 
-          legend.text=element_text(size=18),
-          strip.text = element_text(size=20), strip.background = element_rect(fill = NA, color = "black"),
-          legend.position="bottom", legend.title = element_text(size=20),
-          title = element_text(size=25),  legend.background = element_blank(),
-          legend.box.background = element_rect(colour = "black"), axis.text.x = element_text(angle = 90, hjust = 1),
-          panel.border = element_blank(),
-          panel.background = element_rect(fill = NA, color = "black"),
-          panel.grid = element_blank()
-    ) +
-    geom_vline(xintercept = c(1.5,2.5)) +
-    labs(y='\nMarginal Effect of Treatment\n', x='\nTreatment\n', colour="Sample (Model):", shape="Sample (Model):")
+  if(plotDifferences!=T){
+    firstDiffPlotData <- bind_rows(firstDiffPlotData, .id = "column_label")
+    
+    firstDiffPlotData$column_label <- revalue(factor(firstDiffPlotData$column_label),
+                                              c("1"="Full", 
+                                                "2"="List-Wise Deletion", 
+                                                "3"="Weighted"))
+    
+    normal_data <- firstDiffPlotData %>% group_by(treat_from_to, column_label) %>% summarise(n = n(), .groups = 'drop') %>% filter(n>1)
+    weird_data <- firstDiffPlotData %>% group_by(treat_from_to, column_label) %>% summarise(n = n(), .groups = 'drop') %>% filter(n==1)
+    for(scenario in 1:dim(firstDiffPlotData)[1]){
+      # might need to do one for when k=1 and k=10
+      # or when user_seed=1, 10, or 100, for some reason
+      # the plots create an extra group
+      
+      if(do.call(paste0, firstDiffPlotData[scenario, c("treat_from_to", "column_label")])%in% do.call(paste0, weird_data[, c("treat_from_to", "column_label")])){
+        firstDiffPlotData[scenario, "first_diffs"] <- -1*firstDiffPlotData[scenario, "first_diffs"]
+        firstDiffPlotData[scenario, "lower_CI"] <- -1*firstDiffPlotData[scenario, "lower_CI"] 
+        firstDiffPlotData[scenario, "upper_CI"] <- -1*firstDiffPlotData[scenario, "upper_CI"]
+        firstDiffPlotData[scenario, "treat_from_to"] <- paste(rev(strsplit(as.character(firstDiffPlotData[scenario, "treat_from_to"]), "\\s+")[[1]]), collapse= " ")
+      }
+      
+      if(str_detect(firstDiffPlotData[scenario, c("treat_from_to")], 
+                    levels(temp_models[[sample]]$model[, plot_treatment])[1]) & str_locate(firstDiffPlotData[scenario, c("treat_from_to")], 
+                                                                                           levels(temp_models[[sample]]$model[, plot_treatment])[1])[1]!=1){
+        firstDiffPlotData[scenario, "first_diffs"] <- -1*firstDiffPlotData[scenario, "first_diffs"]
+        firstDiffPlotData[scenario, "lower_CI"] <- -1*firstDiffPlotData[scenario, "lower_CI"] 
+        firstDiffPlotData[scenario, "upper_CI"] <- -1*firstDiffPlotData[scenario, "upper_CI"]
+        firstDiffPlotData[scenario, "treat_from_to"] <- paste(rev(strsplit(as.character(firstDiffPlotData[scenario, "treat_from_to"]), "\\s+")[[1]]), collapse= " ")
+      }
+    }
+    
+    # generate and temporarily save plot of treatment effects
+    # by interact_x for base, weighted, and list-wise models
+    compareRegPlot <- ggplot(firstDiffPlotData, aes(x=treat_from_to, y = first_diffs )) +
+      theme_pubr() +
+      geom_pointrange(aes(ymin = lower_CI, ymax = upper_CI, 
+                          colour=column_label, shape=column_label
+      ),
+      position = position_dodge(width =.75), size=1.5)+
+      scale_shape_manual(values = c(17,18,19, 16))+
+      geom_hline(aes(yintercept= 0), linetype="dashed", size=.5, colour="black") +
+      facet_wrap(~interact_x, ncol=3, scales = "fixed", drop = T) + 
+      scale_colour_grey(start = 0, end = 0.7)+
+      theme(axis.title=element_text(size=20), axis.text = element_text(size=18), 
+            legend.text=element_text(size=18),
+            strip.text = element_text(size=20), strip.background = element_rect(fill = NA, color = "black"),
+            legend.position="bottom", legend.title = element_text(size=20),
+            title = element_text(size=25),  legend.background = element_blank(),
+            legend.box.background = element_rect(colour = "black"), axis.text.x = element_text(angle = 90, hjust = 1),
+            panel.border = element_blank(),
+            panel.background = element_rect(fill = NA, color = "black"),
+            panel.grid = element_blank()
+      ) +
+      geom_vline(xintercept = c(1.5,2.5)) +
+      labs(y='\nMarginal Effect of Treatment\n', x='\nTreatment\n', colour="Sample (Model):", shape="Sample (Model):")
+  }
   
   # check to see if user wants to see plot
   if(display_plot==T){

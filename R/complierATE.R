@@ -86,15 +86,21 @@ complierATE <- function(dataframe=NULL,
     }
   }
   if(k_plot==T){
+    if(!is.null(plot_path)){
+        pdf(plot_path)
+        hist(unique(bootstrappedData$cutoff), xlab="Cutoff Value", 
+             main="", cex.lab=1.5, cex.axis=1.5)
+        dev.off()
+    }
+    if(display_plot==T){
+      hist(unique(bootstrappedData$cutoff), xlab="Cutoff Value", 
+           main="", cex.lab=1.5, cex.axis=1.5)
       if(!is.null(plot_path)){
         pdf(plot_path)
         hist(unique(bootstrappedData$cutoff), xlab="Cutoff Value", 
              main="", cex.lab=1.5, cex.axis=1.5)
         dev.off()
       }
-    if(display_plot==T){
-      hist(unique(bootstrappedData$cutoff), xlab="Cutoff Value", 
-           main="", cex.lab=1.5, cex.axis=1.5)
     }
   }
   if(return_data==T){

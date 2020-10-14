@@ -7,6 +7,7 @@
 #' @param simulated_betas −XBetas that have been simulated from mvrnorm distribution
 #' @param diff_labs 
 #' @param model_type Statistical model to estimate. Currently support OLS and logistic ("ls", "logit").
+#' @param plotDifferences Do you want to see the marginal effects by model, or the differences between the models with regard to their marginal effects? Default=FALSE.
 
 #' 
 #' @return Dataframe of marginal effects with corresponding 95% confidence intervals.
@@ -21,7 +22,7 @@
 #' @rdname generateMarginalEffect
 #' @export
 
-generateMarginalEffect <- function(unique_covars, simulated_betas, diff_labs, model_type){
+generateMarginalEffect <- function(unique_covars, simulated_betas, diff_labs, model_type, plotDifferences){
   # go over all the possible combos of treatments
   predicted_probs <- matrix(ncol=dim(simulated_betas)[2], nrow=dim(simulated_betas)[1])
   for(covar_level in 1:dim(unique_covars)[1]){
@@ -74,7 +75,6 @@ generateMarginalEffect <- function(unique_covars, simulated_betas, diff_labs, mo
   }
   
   names(sim_diffs) <- combo_labs
-  
   # create df fill with point estimates, lower and upper bounds
   CI_data <- data.frame(covar_cats = rep(NA, length(combo_labs)),
                         first_diffs = rep(NA, length(combo_labs)),
@@ -89,6 +89,11 @@ generateMarginalEffect <- function(unique_covars, simulated_betas, diff_labs, mo
     CI_data[i, "upper_CI"] <- CI_interval[2]
     
   }
-  return(CI_data)
+  if(plotDifferences==T){
+    return(sim_diffs)
+  }
+  if(plotDifferences!=T){
+    return(CI_data)
+  }
 }
  

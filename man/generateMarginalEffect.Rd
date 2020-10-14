@@ -5,7 +5,7 @@
 \title{Generate Marginal Effects}
 \usage{
 generateMarginalEffect(unique_covars, simulated_betas, diff_labs,
-  model_type)
+  model_type, plotDifferences)
 }
 \arguments{
 \item{unique_covars}{Model matrix of unique characteristics used to generate treatment effects.}
@@ -15,6 +15,8 @@ generateMarginalEffect(unique_covars, simulated_betas, diff_labs,
 \item{diff_labs}{}
 
 \item{model_type}{Statistical model to estimate. Currently support OLS and logistic ("ls", "logit").}
+
+\item{plotDifferences}{Do you want to see the marginal effects by model, or the differences between the models with regard to their marginal effects? Default=FALSE.}
 }
 \value{
 Dataframe of marginal effects with corresponding 95% confidence intervals.
