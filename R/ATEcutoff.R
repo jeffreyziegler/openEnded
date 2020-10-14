@@ -76,7 +76,8 @@ ATEcutoff <- function(dataframe,
         # plot simulated first diffs
         pass1stDiffPlotData[[sample]] <- generateMarginalEffect(unique_covars = unique_dummies, 
                                                                 simulated_betas=sim_betas, 
-                                                                diff_labs=fd_labs[,1], model_type = type_model)
+                                                                diff_labs=fd_labs[,1], model_type = type_model,
+                                                                plotDifferences = F)
        
         if(type_model=="ols"){
             pass1stDiffPlotData[[sample]]$treat_from <- sapply(str_match_all(pass1stDiffPlotData[[sample]]$covar_cats, 
