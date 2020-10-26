@@ -54,7 +54,7 @@ createWordEmbeddings <- function(dataframe, prompts, responses, user_seed=5, pru
   if(language=="en"){
     # w/ TCM matrix can factorize it via GloVe algorithm
     # text2vec uses a parallel stochastic gradient descent algorithm
-    glove_model <- GloVe$new(word_vectors_size = 50, vocabulary = limited_vocab, x_max = 10)
+    glove_model <- GloVe$new(rank = 50, vocabulary = limited_vocab, x_max = 10)
     # retrieve the word vectors
     word_embeddings <- glove_model$fit_transform(tcm, n_iter = 10000, convergence_tol = 0.00001)
   }
