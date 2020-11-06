@@ -54,7 +54,7 @@ createWordEmbeddings <- function(dataframe, prompts, responses, user_seed=5, pru
   if(language=="en"){
     # w/ TCM matrix can factorize it via GloVe algorithm
     # text2vec uses a parallel stochastic gradient descent algorithm
-    glove_model <- GloVe$new(rank = 50, vocabulary = limited_vocab, x_max = 10)
+    glove_model <- GloVe$new(rank = 50, x_max = 10)
     # retrieve the word vectors
     word_embeddings <- glove_model$fit_transform(tcm, n_iter = 10000, convergence_tol = 0.00001)
   }
@@ -63,11 +63,17 @@ createWordEmbeddings <- function(dataframe, prompts, responses, user_seed=5, pru
   word_vectors <- word_embeddings + t(glove_model$components)  
   
   # execute Relaxed Word Movers Distance
-  rwmd_model <- RWMD$new(word_vectors, method = "cosine", normalize = T)
-  rwmd_dist <- 1-dist2(dtm[1:length(unique(dataframe[, prompts])), ], 
-        dtm[(length(unique(dataframe[, prompts]))+1):dim(dtm)[1],], 
-        # don't need to tell norm here since we normalized above
-        method = rwmd_model, norm = 'none')
+
+  # old way under text2vec version 0.5.0
+  # rwmd_model <- RWMD$new(x=dtm, embeddings=word_vectors, method = "cosine", normalize = T)
+  # rwmd_dist <- 1-dist2(dtm[1:length(unique(dataframe[, prompts])), ], 
+  #                      dtm[(length(unique(dataframe[, prompts]))+1):dim(dtm)[1],], 
+  #                      # don't need to tell norm here since we normalized above
+  #                      method = rwmd_model, norm = 'none')
+  # now under 0.6
+  # should automatically now use cosine distance instead of euclidean
+  rwmd_model <- RWMD$new(x=dtm, embeddings=word_vectors) 
+  rwmd_dist <- 1-rwmd_model$dist2(dtm)
   rwmd_dist <- ifelse(rwmd_dist<0, 0, rwmd_dist)
   
   # now, put those embedding scores back into original dataframe
@@ -75,14 +81,15 @@ createWordEmbeddings <- function(dataframe, prompts, responses, user_seed=5, pru
   for(obs in 1:dim(dataframe)[1]){
     # based on which prompt they saw
     # since we have comparisons of all prompts to all responses
+    #browser()
     if(dataframe[obs, prompts]==unique(dataframe[, prompts])[1]){
-      dataframe[obs, "embedding_score"] <- rwmd_dist[1, obs]
+      dataframe[obs, "embedding_score"] <- rwmd_dist[1, obs+3]
     } 
     if(dataframe[obs, prompts]==unique(dataframe[, prompts])[2]){
-      dataframe[obs, "embedding_score"] <- rwmd_dist[2, obs]
+      dataframe[obs, "embedding_score"] <- rwmd_dist[2, obs+3]
     }
     if(dataframe[obs, prompts]==unique(dataframe[, prompts])[3]){
-      dataframe[obs, "embedding_score"] <- rwmd_dist[3, obs]
+      dataframe[obs, "embedding_score"] <- rwmd_dist[3, obs+3]
     }
   }
   
