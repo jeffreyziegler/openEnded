@@ -4,11 +4,23 @@
 \alias{complierATE}
 \title{Simulate the ATE for Compliers and Non-Compliers}
 \usage{
-complierATE(dataframe = NULL, formula = NULL, plot_treatment = NULL,
-  plot_interact_x = NULL, similarity_measures = c("jaccardDist",
-  "cosineDist"), bounds = c(0.1, 0.2), n = 100, user_seed = 5,
-  model_type = NULL, k = 3, display_plot = T, plot_path = NULL,
-  stable_x, k_plot = F, return_data = F)
+complierATE(
+  dataframe = NULL,
+  formula = NULL,
+  plot_treatment = NULL,
+  plot_interact_x = NULL,
+  similarity_measures = c("jaccardDist", "cosineDist"),
+  bounds = c(0.1, 0.2),
+  n = 100,
+  user_seed = 5,
+  model_type = NULL,
+  k = 3,
+  display_plot = T,
+  plot_path = NULL,
+  stable_x,
+  k_plot = F,
+  return_data = F
+)
 }
 \arguments{
 \item{dataframe}{Dataframe from which we will estimate our regression model.}

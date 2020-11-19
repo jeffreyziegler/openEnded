@@ -16,6 +16,8 @@
            "texreg",
            "text2vec",
            "AER",
+           "xtable",
+           "texreg",
            "plyr",
            "MASS",
            "ggridges",

@@ -4,10 +4,15 @@
 \alias{predictAttention}
 \title{Predict Attention Among Respondents}
 \usage{
-predictAttention(dataframe = NULL, attention_formula = NULL,
+predictAttention(
+  dataframe = NULL,
+  attention_formula = NULL,
   similarity_measures = c("jaccardSimilarity", "cosineSimilarity"),
-  correct_vec = NULL, model_type = NULL, k = 3,
-  up_down_weight = "down")
+  correct_vec = NULL,
+  model_type = NULL,
+  k = 3,
+  up_down_weight = "down"
+)
 }
 \arguments{
 \item{dataframe}{Dataframe from which you will select attention, predictors for attention, etc. for the regression model.}

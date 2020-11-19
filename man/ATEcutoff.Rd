@@ -4,8 +4,18 @@
 \alias{ATEcutoff}
 \title{Create ATE Cutoff}
 \usage{
-ATEcutoff(dataframe, formula, similarity_measures, type_model, k, bounds,
-  user_seed, plot_treatment = NULL, plot_interact_x = NULL, stable_x)
+ATEcutoff(
+  dataframe,
+  formula,
+  similarity_measures,
+  type_model,
+  k,
+  bounds,
+  user_seed,
+  plot_treatment = NULL,
+  plot_interact_x = NULL,
+  stable_x
+)
 }
 \arguments{
 \item{dataframe}{Dataframe from which we will estimate our regression model.}

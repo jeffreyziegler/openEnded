@@ -4,8 +4,13 @@
 \alias{IVcomparison}
 \title{Estimate Instrumental Variable Model for LATE}
 \usage{
-IVcomparison(dataframe = NULL, formula = NULL,
-  similarity_measures = NULL, k = 3, up_down_weight = "up")
+IVcomparison(
+  dataframe = NULL,
+  formula = NULL,
+  similarity_measures = NULL,
+  k = 3,
+  up_down_weight = "up"
+)
 }
 \arguments{
 \item{dataframe}{Dataframe from which you will select the outcome, predictors, and weights for the regression model.}

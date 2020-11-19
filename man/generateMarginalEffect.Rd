@@ -4,8 +4,13 @@
 \alias{generateMarginalEffect}
 \title{Generate Marginal Effects}
 \usage{
-generateMarginalEffect(unique_covars, simulated_betas, diff_labs,
-  model_type, plotDifferences)
+generateMarginalEffect(
+  unique_covars,
+  simulated_betas,
+  diff_labs,
+  model_type,
+  plotDifferences
+)
 }
 \arguments{
 \item{unique_covars}{Model matrix of unique characteristics used to generate treatment effects.}

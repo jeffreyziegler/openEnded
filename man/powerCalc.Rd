@@ -4,8 +4,7 @@
 \alias{powerCalc}
 \title{Power Calculation}
 \usage{
-powerCalc(model, treatment_levels, x_levels, alpha = 0.05,
-  side = "two-sided")
+powerCalc(model, treatment_levels, x_levels, alpha = 0.05, side = "two-sided")
 }
 \arguments{
 \item{model}{Model object from weighted regression that you wish to conduct a power analysis with.}

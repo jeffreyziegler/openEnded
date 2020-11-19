@@ -4,8 +4,13 @@
 \alias{compareK}
 \title{Determine "best" level of k}
 \usage{
-compareK(dataframe, similarity_measures, correct_vec, k_range = 1:10,
-  plot_path = NULL)
+compareK(
+  dataframe,
+  similarity_measures,
+  correct_vec,
+  k_range = 1:10,
+  plot_path = NULL
+)
 }
 \arguments{
 \item{dataframe}{Dataframe from which you will select the similarity measures from.}

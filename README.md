@@ -29,7 +29,6 @@ If you use this software, please cite the original paper (<a href="https://osf.i
   url = {https://github.com/jeffreyziegler/openEnded}
 }
 ```
-
 **Contact:**
 
 Please report issues via Github or email (<div id="hide_email">

@@ -4,13 +4,25 @@
 \alias{regressionComparison}
 \title{Estimate regression models for comparison}
 \usage{
-regressionComparison(dataframe = NULL, formula = NULL,
-  plot_treatment = NULL, plot_interact_x = NULL,
-  similarity_measures = NULL, k = 3, model_type = NULL,
-  up_down_weight = "down", user_seed = 5, n_sims = 10000,
-  correct_vec = NULL, display_plot = F, stable_x = T,
-  plot_path = NULL, print_regs = F, return_data = F,
-  plotDifferences = F)
+regressionComparison(
+  dataframe = NULL,
+  formula = NULL,
+  plot_treatment = NULL,
+  plot_interact_x = NULL,
+  similarity_measures = NULL,
+  k = 3,
+  model_type = NULL,
+  up_down_weight = "down",
+  user_seed = 5,
+  n_sims = 10000,
+  correct_vec = NULL,
+  display_plot = F,
+  stable_x = T,
+  plot_path = NULL,
+  print_regs = F,
+  return_data = F,
+  plotDifferences = F
+)
 }
 \arguments{
 \item{dataframe}{Dataframe from which you will select the outcome, predictors, and weights for the regression model.}

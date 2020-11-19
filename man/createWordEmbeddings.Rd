@@ -4,8 +4,14 @@
 \alias{createWordEmbeddings}
 \title{Create Word Embeddings}
 \usage{
-createWordEmbeddings(dataframe, prompts, responses, user_seed = 5,
-  prune_len = 2, language = "en")
+createWordEmbeddings(
+  dataframe,
+  prompts,
+  responses,
+  user_seed = 5,
+  prune_len = 2,
+  language = "en"
+)
 }
 \arguments{
 \item{dataframe}{Dataframe from which we will estimate our regression model.}
