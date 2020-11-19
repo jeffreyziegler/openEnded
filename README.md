@@ -29,10 +29,3 @@ If you use this software, please cite the original paper (<a href="https://osf.i
   url = {https://github.com/jeffreyziegler/openEnded}
 }
 ```
-**Contact:**
-
-Please report issues via Github or email (<div id="hide_email">
-        <code>jeffrey.</code><b>I</b><code>ziegler</code><b>don't</b><code>@</code><b>want</b><code>emo</code><b>spam!
-        </b><code>ry</code><code>.</code><b>please</b><code>e</code><b>leave
-        </b><code>d</code><b>me</b><b>alone</b><code>u</code><b>!</b>
-</div>)
